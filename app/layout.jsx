@@ -20,6 +20,13 @@ export const metadata = {
   authors: [{ name: siteConfig.author }],
   creator: siteConfig.author,
   publisher: siteConfig.name,
+  icons: {
+    icon: [
+      { rel: 'icon', url: '/assets/images/icon.png', type: 'image/png' },
+      { rel: 'shortcut icon', url: '/assets/images/icon.png', type: 'image/png' },
+    ],
+    apple: [{ url: '/assets/images/icon.png' }],
+  },
   robots: "index,follow",
   openGraph: {
     type: "website",
