@@ -1,0 +1,17 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /auth/
+Disallow: /checkout/
+Disallow: /my-account/
+Disallow: /profile/
+Disallow: /orders/
+Disallow: /order-details/
+
+# Host
+Host: https://rapidex.com
+
+# Sitemaps
+Sitemap: https://rapidex.com/sitemap.xml

@@ -15,9 +15,9 @@ const nextConfig = {
     trailingSlash: false,
     // Optimize for production
     compress: true,
-    // Enable experimental features for better performance
+    // Experimental features
     experimental: {
-        optimizeCss: true,
+        // Removed optimizeCss to prevent 'critters' dependency error during build
         optimizePackageImports: ['lucide-react', '@mui/material', '@mui/icons-material'],
     },
     // Performance optimizations
