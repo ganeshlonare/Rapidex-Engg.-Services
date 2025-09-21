@@ -21,7 +21,7 @@ Allow: /privacy-policy
 Allow: /terms-and-conditions
 
 # Sitemap location
-Sitemap: https://rapidex.com/sitemap.xml
+Sitemap: https://www.rapidex.tech/sitemap.xml
 
 # Crawl delay (optional)
 Crawl-delay: 1
