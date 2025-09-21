@@ -7,7 +7,7 @@ import { notFound } from 'next/navigation'
 
 // Generate metadata for this page
 export async function generateMetadata({ params }) {
-    const { slug } = await params
+    const { slug } = params
     
     try {
         const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/product/details/${slug}`
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }) {
 }
 
 const ProductPage = async ({ params }) => {
-    const { slug } = await params
+    const { slug } = params
 
     let url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/product/details/${slug}`
 
