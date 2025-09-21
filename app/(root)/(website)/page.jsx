@@ -8,6 +8,7 @@ import FeaturedProduct from '@/components/Application/Website/FeaturedProduct'
 import FeaturedCategories from '@/components/Application/Website/FeaturedCategories'
 import FeaturedBrands from '@/components/Application/Website/FeaturedBrands'
 import Testimonial from '@/components/Application/Website/Testimonial'
+import StaticMetaTags from '@/components/SEO/StaticMetaTags'
 import { generateMetadata } from '@/lib/seo'
 
 import { GiReturnArrow } from "react-icons/gi";
@@ -15,12 +16,47 @@ import { FaShippingFast } from "react-icons/fa";
 import { BiSupport } from "react-icons/bi";
 import { TbRosetteDiscountFilled } from "react-icons/tb";
 
-export const metadata = generateMetadata({
-    title: "Home - Premium Industrial Components & Robotics Parts",
+// Simplified static metadata for better social media compatibility
+export const metadata = {
+    title: "Home - Premium Industrial Components & Robotics Parts | Rapidex Engineering Services",
     description: "Shop premium industrial components, robotics parts, and automation solutions. Quality guaranteed with fast shipping, 24/7 support, and member discounts.",
-    keywords: ["home", "industrial components", "robotics", "automation", "e-commerce", "online shopping"],
-    url: "/"
-});
+    keywords: "industrial components, robotics parts, automation solutions, nut bolts, fasteners, bearings, sensors, PLCs, e-commerce, online shopping",
+    authors: [{ name: "Rapidex Engineering Services" }],
+    creator: "Rapidex Engineering Services",
+    publisher: "Rapidex Engineering Services",
+    robots: "index,follow",
+    openGraph: {
+        type: "website",
+        locale: "en_US",
+        url: "https://www.rapidex.tech",
+        title: "Home - Premium Industrial Components & Robotics Parts | Rapidex Engineering Services",
+        description: "Shop premium industrial components, robotics parts, and automation solutions. Quality guaranteed with fast shipping, 24/7 support, and member discounts.",
+        siteName: "Rapidex Engineering Services",
+        images: [
+            {
+                url: "https://www.rapidex.tech/assets/images/rapidex-social-share.png",
+                width: 1200,
+                height: 630,
+                alt: "Rapidex Engineering Services - Premium Industrial Components",
+                type: 'image/png'
+            },
+        ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        site: "@rapidextech",
+        creator: "@rapidextech",
+        title: "Home - Premium Industrial Components & Robotics Parts | Rapidex Engineering Services",
+        description: "Shop premium industrial components, robotics parts, and automation solutions. Quality guaranteed with fast shipping, 24/7 support, and member discounts.",
+        images: [{
+            url: "https://www.rapidex.tech/assets/images/rapidex-social-share.png",
+            alt: "Rapidex Engineering Services - Premium Industrial Components",
+        }],
+    },
+    alternates: {
+        canonical: "https://www.rapidex.tech",
+    },
+};
 
 const Home = () => {
     return (

@@ -13,7 +13,7 @@ const assistantFont = Assistant({
 })
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.rapidex.tech'),
+  metadataBase: new URL('https://www.rapidex.tech'),
   title: siteConfig.name,
   description: siteConfig.description,
   keywords: siteConfig.keywords.join(", "),
