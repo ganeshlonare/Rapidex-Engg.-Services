@@ -11,7 +11,7 @@ Disallow: /orders/
 Disallow: /order-details/
 
 # Host
-Host: https://rapidex.com
+Host: https://www.rapidex.tech
 
 # Sitemaps
-Sitemap: https://rapidex.com/sitemap.xml
+Sitemap: https://www.rapidex.tech/sitemap.xml
