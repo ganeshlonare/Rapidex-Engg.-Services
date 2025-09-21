@@ -132,20 +132,144 @@ export function generateOrganizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${siteConfig.url}#organization`,
     name: siteConfig.name,
+    alternateName: "Rapidex",
     description: siteConfig.description,
     url: siteConfig.url,
-    logo: `${siteConfig.url}/assets/images/logo.png`,
+    logo: {
+      "@type": "ImageObject",
+      "@id": `${siteConfig.url}#logo`,
+      url: `${siteConfig.url}/assets/images/logo.png`,
+      width: 300,
+      height: 100,
+      caption: siteConfig.name
+    },
+    image: `${siteConfig.url}/assets/images/rapidex-social-share.png`,
     sameAs: [
       `https://twitter.com/${siteConfig.social.twitter.replace('@', '')}`,
       `https://facebook.com/${siteConfig.social.facebook}`,
-      `https://instagram.com/${siteConfig.social.instagram}`
+      `https://instagram.com/${siteConfig.social.instagram}`,
+      `https://youtube.com/@rapidexelectronics`,
+      `https://wa.me/917620302114`
     ],
-    contactPoint: {
-      "@type": "ContactPoint",
-      telephone: "+1-234-567-8900",
-      contactType: "Customer Service",
-      availableLanguage: "English"
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: "+91-7620302114",
+        contactType: "Customer Service",
+        availableLanguage: ["English", "Hindi"],
+        areaServed: "IN",
+        contactOption: "TollFree"
+      },
+      {
+        "@type": "ContactPoint",
+        email: "rapidex95@gmail.com",
+        contactType: "Customer Support",
+        availableLanguage: ["English", "Hindi"]
+      }
+    ],
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "B.30(A) Kopargaon Industrial Estate Ltd., Po Shingnapur Tal. Kopargaon",
+      addressLocality: "Kopargaon",
+      addressRegion: "Maharashtra",
+      postalCode: "423603",
+      addressCountry: "IN"
+    },
+    foundingDate: "2020",
+    numberOfEmployees: "10-50",
+    knowsAbout: [
+      "Industrial Components",
+      "Robotics Parts",
+      "Automation Solutions",
+      "Electronic Hardware",
+      "Sensors",
+      "PLCs",
+      "Microcontrollers"
+    ],
+    makesOffer: {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Product",
+        name: "Industrial Components & Robotics Parts",
+        category: "Industrial Hardware"
+      },
+      areaServed: "IN",
+      availableDeliveryMethod: "OnSitePickup"
+    }
+  };
+}
+
+export function generateWebsiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${siteConfig.url}#website`,
+    name: siteConfig.name,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    publisher: {
+      "@id": `${siteConfig.url}#organization`
+    },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${siteConfig.url}/search?q={search_term_string}`
+      },
+      "query-input": "required name=search_term_string"
+    },
+    inLanguage: "en-US",
+    copyrightYear: new Date().getFullYear(),
+    copyrightHolder: {
+      "@id": `${siteConfig.url}#organization`
+    }
+  };
+}
+
+export function generateBreadcrumbSchema(items: Array<{name: string, url: string}>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: `${siteConfig.url}${item.url}`
+    }))
+  };
+}
+
+export function generateProductSchema(product: any) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": `${siteConfig.url}/product/${product.slug}#product`,
+    name: product.name,
+    description: product.description,
+    image: product.images?.map((img: any) => img.url) || [],
+    brand: {
+      "@type": "Brand",
+      name: product.brand?.name || "Rapidex"
+    },
+    category: product.category?.name,
+    sku: product.sku,
+    mpn: product.sku,
+    offers: {
+      "@type": "Offer",
+      url: `${siteConfig.url}/product/${product.slug}`,
+      priceCurrency: "INR",
+      price: product.sellingPrice,
+      priceValidUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      availability: product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      itemCondition: "https://schema.org/NewCondition",
+      seller: {
+        "@id": `${siteConfig.url}#organization`
+      }
+    },
+    manufacturer: {
+      "@id": `${siteConfig.url}#organization`
     }
   };
 }
@@ -189,61 +313,4 @@ export function generateLocalBusinessSchema() {
   };
 }
 
-export function generateProductSchema(product) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.name,
-    description: product.description,
-    image: product.images?.map(img => img.url) || [],
-    brand: {
-      "@type": "Brand",
-      name: product.brand?.name || siteConfig.name
-    },
-    category: product.category?.name,
-    sku: product.sku,
-    offers: {
-      "@type": "Offer",
-      price: product.price,
-      priceCurrency: "INR",
-      availability: product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      seller: {
-        "@type": "Organization",
-        name: siteConfig.name
-      }
-    },
-    aggregateRating: product.rating ? {
-      "@type": "AggregateRating",
-      ratingValue: product.rating,
-      reviewCount: product.reviewCount || 0
-    } : undefined
-  };
-}
-
-export function generateBreadcrumbSchema(breadcrumbs) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: breadcrumbs.map((crumb, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      name: crumb.name,
-      item: `${siteConfig.url}${crumb.url}`
-    }))
-  };
-}
-
-export function generateWebsiteSchema() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: siteConfig.name,
-    description: siteConfig.description,
-    url: siteConfig.url,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${siteConfig.url}/search?q={search_term_string}`,
-      "query-input": "required name=search_term_string"
-    }
-  };
-}
+// Duplicate functions removed - using the enhanced versions above

@@ -29,26 +29,87 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         }
         
         const product = getProduct.data.product
+        const productDescription = product.description || `Buy ${product.name} - high quality industrial component with fast shipping and expert support.`
+        const productImage = product.images?.[0]?.url || "/assets/images/rapidex-social-share.png"
+        
         return {
             metadataBase: new URL('https://www.rapidex.tech'),
-            title: `${product.name} - ${product.category?.name || 'Industrial Components'} | Rapidex Engineering Services`,
-            description: `${product.description || `Buy ${product.name} - high quality industrial component with fast shipping and expert support.`}`,
-            keywords: [product.name, product.category?.name, "industrial components", "robotics parts", "automation solutions"],
+            title: `${product.name} - ${product.category?.name || 'Industrial Components'}`,
+            description: productDescription.length > 160 ? productDescription.substring(0, 157) + '...' : productDescription,
+            keywords: [
+                product.name, 
+                product.category?.name, 
+                product.brand?.name,
+                "industrial components", 
+                "robotics parts", 
+                "automation solutions",
+                "buy online",
+                "rapidex"
+            ].filter(Boolean),
+            authors: [{ name: "Rapidex Engineering Services" }],
+            creator: "Rapidex Engineering Services",
+            publisher: "Rapidex Engineering Services",
+            robots: {
+                index: true,
+                follow: true,
+                googleBot: {
+                    index: true,
+                    follow: true,
+                    'max-image-preview': 'large',
+                    'max-snippet': -1,
+                },
+            },
             openGraph: {
-                title: `${product.name} - ${product.category?.name || 'Industrial Components'} | Rapidex Engineering Services`,
-                description: `${product.description || `Buy ${product.name} - high quality industrial component with fast shipping and expert support.`}`,
-                url: `/product/${slug}`,
-                images: [product.images?.[0]?.url || "/assets/images/rapidex-social-share.png"],
                 type: "website",
+                locale: "en_US",
+                url: `/product/${slug}`,
+                title: `${product.name} - ${product.category?.name || 'Industrial Components'}`,
+                description: productDescription,
+                siteName: "Rapidex Engineering Services",
+                images: [
+                    {
+                        url: productImage,
+                        width: 800,
+                        height: 600,
+                        alt: `${product.name} - ${product.category?.name || 'Industrial Component'}`,
+                        type: 'image/jpeg',
+                    },
+                    {
+                        url: "/assets/images/rapidex-social-share.png",
+                        width: 1200,
+                        height: 630,
+                        alt: "Rapidex Engineering Services - Premium Industrial Components",
+                        type: 'image/png',
+                    }
+                ],
             },
             twitter: {
                 card: "summary_large_image",
-                title: `${product.name} - ${product.category?.name || 'Industrial Components'} | Rapidex Engineering Services`,
-                description: `${product.description || `Buy ${product.name} - high quality industrial component with fast shipping and expert support.`}`,
-                images: [product.images?.[0]?.url || "/assets/images/rapidex-social-share.png"],
+                site: "@rapidextech",
+                creator: "@rapidextech",
+                title: `${product.name} - ${product.category?.name || 'Industrial Components'}`,
+                description: productDescription.length > 200 ? productDescription.substring(0, 197) + '...' : productDescription,
+                images: [
+                    {
+                        url: productImage,
+                        alt: `${product.name} - ${product.category?.name || 'Industrial Component'}`,
+                    }
+                ],
             },
             alternates: {
                 canonical: `/product/${slug}`,
+            },
+            category: 'technology',
+            classification: `${product.category?.name || 'Industrial Components'} - E-commerce Product`,
+            other: {
+                'product:brand': product.brand?.name || 'Rapidex',
+                'product:availability': product.stock > 0 ? 'in stock' : 'out of stock',
+                'product:condition': 'new',
+                'product:price:amount': product.sellingPrice?.toString() || '',
+                'product:price:currency': 'INR',
+                'og:price:amount': product.sellingPrice?.toString() || '',
+                'og:price:currency': 'INR',
+                'product:retailer_item_id': product.sku || product._id,
             },
         }
     } catch (error) {

@@ -15,20 +15,48 @@ const assistantFont = Assistant({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.rapidex.tech'),
-  title: siteConfig.name,
+  title: {
+    default: siteConfig.name,
+    template: '%s | Rapidex Engineering Services'
+  },
   description: siteConfig.description,
-  keywords: siteConfig.keywords.join(", "),
-  authors: [{ name: siteConfig.author }],
+  keywords: siteConfig.keywords,
+  authors: [{ name: siteConfig.author, url: 'https://www.rapidex.tech' }],
   creator: siteConfig.author,
   publisher: siteConfig.name,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   icons: {
     icon: [
-      { rel: 'icon', url: '/assets/images/icon.png', type: 'image/png' },
-      { rel: 'shortcut icon', url: '/assets/images/icon.png', type: 'image/png' },
+      { url: '/favicon.ico', sizes: '32x32' },
+      { url: '/assets/images/icon.png', type: 'image/png', sizes: '192x192' },
     ],
-    apple: [{ url: '/assets/images/icon.png' }],
+    shortcut: '/favicon.ico',
+    apple: [
+      { url: '/assets/images/icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    other: [
+      {
+        rel: 'apple-touch-icon-precomposed',
+        url: '/assets/images/icon.png',
+      },
+    ],
   },
-  robots: "index,follow",
+  manifest: '/manifest.json',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -59,11 +87,32 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: siteConfig.url,
+    languages: {
+      'en-US': siteConfig.url,
+    },
   },
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION,
+    yandex: process.env.YANDEX_VERIFICATION,
+    yahoo: process.env.YAHOO_SITE_VERIFICATION,
+    other: {
+      'msvalidate.01': process.env.BING_SITE_VERIFICATION || '',
+    },
   },
-  // Additional meta tags for better social sharing
+  category: 'technology',
+  classification: 'Industrial Components & Robotics Parts E-commerce',
+  referrer: 'origin-when-cross-origin',
+  colorScheme: 'light',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f97316' },
+    { media: '(prefers-color-scheme: dark)', color: '#ea580c' },
+  ],
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+  },
+  // Additional meta tags for better social sharing and SEO
   other: {
     'og:image:width': '1200',
     'og:image:height': '630',
@@ -71,6 +120,13 @@ export const metadata: Metadata = {
     'twitter:image:alt': siteConfig.name,
     'og:site_name': siteConfig.name,
     'application-name': siteConfig.name,
+    'apple-mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-status-bar-style': 'default',
+    'apple-mobile-web-app-title': 'Rapidex',
+    'mobile-web-app-capable': 'yes',
+    'msapplication-TileColor': '#f97316',
+    'msapplication-config': '/browserconfig.xml',
+    'theme-color': '#f97316',
   }
 };
 

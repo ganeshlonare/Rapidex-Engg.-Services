@@ -1,0 +1,52 @@
+{
+  "name": "Rapidex Engineering Services - Premium Industrial Components & Robotics Parts",
+  "short_name": "Rapidex",
+  "description": "Shop premium industrial components, robotics parts, automation solutions, nut bolts, fasteners, bearings, sensors, PLCs and more. Quality guaranteed with fast shipping and expert support.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f97316",
+  "orientation": "portrait-primary",
+  "categories": ["shopping", "business", "productivity"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/assets/images/icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/images/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/images/rapidex-social-share.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Rapidex Engineering Services Homepage"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Shop Products",
+      "short_name": "Shop",
+      "description": "Browse our product catalog",
+      "url": "/shop",
+      "icons": [{ "src": "/assets/images/icon.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Categories",
+      "short_name": "Categories",
+      "description": "Browse product categories",
+      "url": "/categories",
+      "icons": [{ "src": "/assets/images/icon.png", "sizes": "96x96" }]
+    }
+  ]
+}
