@@ -1,0 +1,50 @@
+#############################################
+# Rapidex E‑Commerce - Environment Variables #
+#############################################
+
+# ----- App / URLs -----
+# Public Site URL (used for SEO metadata, canonical, sitemap)
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# Base URL for building absolute links inside emails etc.
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+
+# API base (usually http://localhost:3000/api for local)
+NEXT_PUBLIC_API_BASE_URL=http://localhost:3000/api
+
+
+# ----- Security -----
+# JWT signing secret (keep strong & private)
+SECRET_KEY=replace-with-strong-secret
+
+
+# ----- Database -----
+MONGODB_URI=mongodb://localhost:27017/rapidex
+
+
+# ----- Payments (Razorpay) -----
+NEXT_PUBLIC_RAZORPAY_KEY_ID=
+RAZORPAY_KEY_SECRET=
+
+
+# ----- Cloudinary (Media Uploads) -----
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
+NEXT_PUBLIC_CLOUDINARY_API_KEY=
+CLOUDINARY_SECRET_KEY=
+
+
+# ----- SMTP (Emails) -----
+NODEMAILER_HOST=
+NODEMAILER_PORT=587
+NODEMAILER_EMAIL=
+NODEMAILER_PASSWORD=
+
+
+# ----- Analytics (Optional) -----
+GOOGLE_ANALYTICS_ID=
+GOOGLE_TAG_MANAGER_ID=
+FACEBOOK_PIXEL_ID=
+
+# SEO Verification Codes (Optional)
+GOOGLE_SITE_VERIFICATION=
+BING_WEBMASTER_VERIFICATION=

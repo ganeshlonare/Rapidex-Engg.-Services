@@ -1,0 +1,27 @@
+User-agent: *
+Allow: /
+
+# Disallow admin pages
+Disallow: /admin/
+Disallow: /api/
+Disallow: /auth/
+Disallow: /checkout/
+Disallow: /my-account/
+Disallow: /profile/
+Disallow: /orders/
+Disallow: /order-details/
+
+# Allow important pages
+Allow: /
+Allow: /shop
+Allow: /product/
+Allow: /category/
+Allow: /about-us
+Allow: /privacy-policy
+Allow: /terms-and-conditions
+
+# Sitemap location
+Sitemap: https://rapidex.com/sitemap.xml
+
+# Crawl delay (optional)
+Crawl-delay: 1
