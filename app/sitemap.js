@@ -1,4 +1,11 @@
 import { siteConfig } from '@/lib/seo'
+import { connectDB } from '@/lib/databaseConnection'
+import Product from '@/models/Product.model'
+import Category from '@/models/Category.model'
+
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
+export const revalidate = 0
 
 export default async function sitemap() {
   const baseUrl = siteConfig.url
@@ -43,19 +50,23 @@ export default async function sitemap() {
     },
   ]
 
-  // Dynamic product pages (you can fetch from your API)
+  // Dynamic product pages (query directly instead of HTTP fetch)
   let productPages = []
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/sitemap/products`)
-    if (response.ok) {
-      const products = await response.json()
-      productPages = products.data?.map(product => ({
-        url: `${baseUrl}/product/${product.slug}`,
-        lastModified: new Date(product.updatedAt),
-        changeFrequency: 'weekly',
-        priority: 0.8,
-      })) || []
-    }
+    await connectDB()
+    const products = await Product.find({
+      status: 'active',
+      isDeleted: false,
+    })
+      .select('slug updatedAt')
+      .lean()
+
+    productPages = (products || []).map((product) => ({
+      url: `${baseUrl}/product/${product.slug}`,
+      lastModified: new Date(product.updatedAt),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    }))
   } catch (error) {
     console.error('Error fetching products for sitemap:', error)
   }
@@ -63,16 +74,20 @@ export default async function sitemap() {
   // Dynamic category pages
   let categoryPages = []
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/sitemap/categories`)
-    if (response.ok) {
-      const categories = await response.json()
-      categoryPages = categories.data?.map(category => ({
-        url: `${baseUrl}/category/${category.slug}`,
-        lastModified: new Date(category.updatedAt),
-        changeFrequency: 'weekly',
-        priority: 0.7,
-      })) || []
-    }
+    // DB already connected above; safe to reuse
+    const categories = await Category.find({
+      status: 'active',
+      isDeleted: false,
+    })
+      .select('slug updatedAt')
+      .lean()
+
+    categoryPages = (categories || []).map((category) => ({
+      url: `${baseUrl}/category/${category.slug}`,
+      lastModified: new Date(category.updatedAt),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    }))
   } catch (error) {
     console.error('Error fetching categories for sitemap:', error)
   }
