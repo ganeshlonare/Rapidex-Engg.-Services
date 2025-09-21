@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import { siteConfig, generateOrganizationSchema, generateWebsiteSchema } from '../lib/seo';
 import StructuredData, { MultipleStructuredData } from '@/components/SEO/StructuredData';
 import { GoogleAnalytics, FacebookPixel, GoogleTagManager } from '@/components/SEO/Analytics';
+import type { Metadata } from 'next';
 
 const assistantFont = Assistant({
   weight: ['400', '500', '600', '700', '800'],
@@ -12,7 +13,7 @@ const assistantFont = Assistant({
   display: 'swap'
 })
 
-export const metadata = {
+export const metadata: Metadata = {
   metadataBase: new URL('https://www.rapidex.tech'),
   title: siteConfig.name,
   description: siteConfig.description,
@@ -73,7 +74,11 @@ export const metadata = {
   }
 };
 
-export default function RootLayout({ children }) {
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   const organizationSchema = generateOrganizationSchema();
   const websiteSchema = generateWebsiteSchema();
 

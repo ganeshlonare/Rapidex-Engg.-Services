@@ -1,12 +1,27 @@
 import React from 'react'
-import { generateMetadata } from '@/lib/seo'
+import { Metadata } from 'next'
 
-export const metadata = generateMetadata({
-    title: "About Us - Rapidex Industrial & Electronic Hardware Solutions",
+export const metadata: Metadata = {
+    metadataBase: new URL('https://www.rapidex.tech'),
+    title: "About Us - Rapidex Industrial & Electronic Hardware Solutions | Rapidex Engineering Services",
     description: "Learn about Rapidex - your reliable partner for industrial hardware and electronic hardware solutions. Quality nut bolts, fasteners, bearings, sensors, controllers, PLCs and more.",
     keywords: ["about us", "rapidex", "industrial hardware", "electronic hardware", "company info", "nut bolts", "fasteners", "bearings", "sensors", "PLCs"],
-    url: "/about-us"
-});
+    openGraph: {
+        title: "About Us - Rapidex Industrial & Electronic Hardware Solutions | Rapidex Engineering Services",
+        description: "Learn about Rapidex - your reliable partner for industrial hardware and electronic hardware solutions. Quality nut bolts, fasteners, bearings, sensors, controllers, PLCs and more.",
+        url: "/about-us",
+        images: ["/assets/images/rapidex-social-share.png"],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "About Us - Rapidex Industrial & Electronic Hardware Solutions | Rapidex Engineering Services",
+        description: "Learn about Rapidex - your reliable partner for industrial hardware and electronic hardware solutions. Quality nut bolts, fasteners, bearings, sensors, controllers, PLCs and more.",
+        images: ["/assets/images/rapidex-social-share.png"],
+    },
+    alternates: {
+        canonical: "/about-us",
+    },
+};
 
 const AboutUs = () => {
  return (

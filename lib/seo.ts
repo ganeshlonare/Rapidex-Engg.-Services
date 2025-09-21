@@ -1,5 +1,21 @@
 // SEO Configuration and Utilities
-export const siteConfig = {
+import { Metadata } from 'next'
+
+interface SiteConfig {
+  name: string;
+  description: string;
+  url: string;
+  ogImage: string;
+  author: string;
+  keywords: string[];
+  social: {
+    twitter: string;
+    facebook: string;
+    instagram: string;
+  };
+}
+
+export const siteConfig: SiteConfig = {
   name: "Rapidex Engineering Services - Premium Industrial Components",
   description: "Premium industrial components, robotics parts, automation solutions, nut bolts, fasteners, bearings, sensors, PLCs and more. Quality guaranteed with fast shipping and expert support.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.rapidex.tech",
@@ -29,6 +45,16 @@ export const siteConfig = {
 };
 
 // Generate meta tags for pages
+interface GenerateMetadataParams {
+  title?: string;
+  description?: string;
+  keywords?: string[];
+  image?: string;
+  url?: string;
+  type?: string;
+  noIndex?: boolean;
+}
+
 export function generateMetadata({
   title,
   description,
@@ -37,7 +63,7 @@ export function generateMetadata({
   url,
   type = "website",
   noIndex = false
-}) {
+}: GenerateMetadataParams): Metadata {
   const siteTitle = title ? `${title} | ${siteConfig.name}` : siteConfig.name;
   const siteDescription = description || siteConfig.description;
   const toAbsolute = (u) => {
@@ -58,7 +84,7 @@ export function generateMetadata({
     publisher: siteConfig.name,
     robots: noIndex ? "noindex,nofollow" : "index,follow",
     openGraph: {
-      type,
+      type: type as "website",
       locale: "en_US",
       url: siteUrl,
       title: siteTitle,
@@ -98,41 +124,8 @@ export function generateMetadata({
   };
 }
 
-// Generate product metadata
-export function generateProductMetadata(product) {
-  const title = product.name;
-  const description = product.shortDescription || product.description?.substring(0, 160);
-  const keywords = [
-    product.name,
-    product.category?.name,
-    product.brand?.name,
-    ...(product.tags || [])
-  ].filter(Boolean);
-  
-  return generateMetadata({
-    title,
-    description,
-    keywords,
-    image: product.images?.[0]?.url,
-    url: `/product/${product.slug}`,
-    type: "website"
-  });
-}
-
-// Generate category metadata
-export function generateCategoryMetadata(category) {
-  const title = `${category.name} Products`;
-  const description = category.description || `Shop premium ${category.name.toLowerCase()} products at ${siteConfig.name}. Quality guaranteed with fast shipping.`;
-  const keywords = [category.name, "products", "shop", "buy"];
-  
-  return generateMetadata({
-    title,
-    description,
-    keywords,
-    image: category.image,
-    url: `/category/${category.slug}`,
-  });
-}
+// Note: generateProductMetadata and generateCategoryMetadata functions removed
+// Now using Next.js Metadata API directly in page components
 
 // Generate JSON-LD structured data
 export function generateOrganizationSchema() {

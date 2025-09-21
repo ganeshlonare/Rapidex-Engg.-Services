@@ -159,7 +159,7 @@ const LoginPage = () => {
                                     </div>
                                     <div className='text-center'>
                                         <div className='flex justify-center items-center gap-1'>
-                                            <p>Don't have account?</p>
+                                            <p>Don&apos;t have account?</p>
                                             <Link href={WEBSITE_REGISTER} className='text-orange-500 hover:text-orange-600 underline'>Create account!</Link>
                                         </div>
                                         <div className='mt-3'>

@@ -9,7 +9,11 @@ const kumbh = Kumbh_Sans({
     subsets: ['latin']
 })
 
-const layout = ({ children }) => {
+interface LayoutProps {
+    children: React.ReactNode;
+}
+
+const layout: React.FC<LayoutProps> = ({ children }) => {
     return (
         <div className={kumbh.className}>
             <Header />

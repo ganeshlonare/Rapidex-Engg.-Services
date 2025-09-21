@@ -11,7 +11,8 @@ Disallow: /orders/
 Disallow: /order-details/
 
 # Host
-Host: https://www.rapidex.tech
+Host: http://localhost:3000
 
 # Sitemaps
-Sitemap: https://www.rapidex.tech/sitemap.xml
+Sitemap: http://localhost:3000/sitemap.xml
+Sitemap: https://rapidex.com/sitemap.xml

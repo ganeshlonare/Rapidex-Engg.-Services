@@ -8,6 +8,7 @@ import FeaturedProduct from '@/components/Application/Website/FeaturedProduct'
 import FeaturedCategories from '@/components/Application/Website/FeaturedCategories'
 import FeaturedBrands from '@/components/Application/Website/FeaturedBrands'
 import Testimonial from '@/components/Application/Website/Testimonial'
+import type { Metadata } from 'next'
 
 import { GiReturnArrow } from "react-icons/gi";
 import { FaShippingFast } from "react-icons/fa";
@@ -19,7 +20,7 @@ export const dynamic = 'force-static'
 export const revalidate = false
 
 // Static metadata for social media compatibility
-export const metadata = {
+export const metadata: Metadata = {
     metadataBase: new URL('https://www.rapidex.tech'),
     title: "Rapidex Engineering Services - Premium Industrial Components & Robotics Parts",
     description: "Shop premium industrial components, robotics parts, automation solutions, nut bolts, fasteners, bearings, sensors, PLCs and more. Quality guaranteed with fast shipping and expert support.",
@@ -57,7 +58,7 @@ export const metadata = {
     },
 };
 
-const Home = () => {
+const Home: React.FC = () => {
     return (
         <>
             <section>

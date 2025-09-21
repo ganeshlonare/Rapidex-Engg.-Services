@@ -1,12 +1,19 @@
 import axios from 'axios'
 import React from 'react'
-import { generateCategoryMetadata, generateBreadcrumbSchema } from '@/lib/seo'
+import { generateBreadcrumbSchema } from '@/lib/seo'
 import StructuredData from '@/components/SEO/StructuredData'
 import { notFound } from 'next/navigation'
 import ProductBox from '@/components/Application/Website/ProductBox'
+import { Metadata } from 'next'
+
+interface PageProps {
+    params: {
+        slug: string;
+    };
+}
 
 // Generate metadata for category pages
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { slug } = params
     
     try {
@@ -15,21 +22,44 @@ export async function generateMetadata({ params }) {
         
         if (!getCategory.success || !getCategory.data?.category) {
             return {
-                title: 'Category Not Found',
+                title: 'Category Not Found | Rapidex Engineering Services',
                 description: 'The requested category could not be found.',
+                robots: 'noindex,nofollow',
             }
         }
         
-        return generateCategoryMetadata(getCategory.data.category)
+        const category = getCategory.data.category
+        return {
+            metadataBase: new URL('https://www.rapidex.tech'),
+            title: `${category.name} - Industrial Components & Parts | Rapidex Engineering Services`,
+            description: `Shop ${category.name} products including industrial components, robotics parts, and automation solutions. Quality guaranteed with fast shipping.`,
+            keywords: [category.name, "industrial components", "robotics parts", "automation solutions"],
+            openGraph: {
+                title: `${category.name} - Industrial Components & Parts | Rapidex Engineering Services`,
+                description: `Shop ${category.name} products including industrial components, robotics parts, and automation solutions. Quality guaranteed with fast shipping.`,
+                url: `/category/${slug}`,
+                images: [category.image?.url || "/assets/images/rapidex-social-share.png"],
+            },
+            twitter: {
+                card: "summary_large_image",
+                title: `${category.name} - Industrial Components & Parts | Rapidex Engineering Services`,
+                description: `Shop ${category.name} products including industrial components, robotics parts, and automation solutions. Quality guaranteed with fast shipping.`,
+                images: [category.image?.url || "/assets/images/rapidex-social-share.png"],
+            },
+            alternates: {
+                canonical: `/category/${slug}`,
+            },
+        }
     } catch (error) {
         return {
-            title: 'Category Not Found',
+            title: 'Category Not Found | Rapidex Engineering Services',
             description: 'The requested category could not be found.',
+            robots: 'noindex,nofollow',
         }
     }
 }
 
-const CategoryPage = async ({ params }) => {
+const CategoryPage = async ({ params }: PageProps) => {
     const { slug } = params
 
     try {
