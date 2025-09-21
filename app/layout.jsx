@@ -2,7 +2,7 @@ import GlobalProvider from "@/components/Application/GlobalProvider";
 import "./globals.css";
 import { Assistant } from 'next/font/google'
 import { ToastContainer } from 'react-toastify';
-import { siteConfig, generateOrganizationSchema, generateWebsiteSchema } from '@/lib/seo';
+import { siteConfig, generateOrganizationSchema, generateWebsiteSchema } from '../lib/seo';
 import StructuredData, { MultipleStructuredData } from '@/components/SEO/StructuredData';
 import { GoogleAnalytics, FacebookPixel, GoogleTagManager } from '@/components/SEO/Analytics';
 
@@ -12,7 +12,6 @@ const assistantFont = Assistant({
   display: 'swap'
 })
 
-/** @type {import('next').Metadata} */
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.rapidex.tech'),
   title: siteConfig.name,
