@@ -14,8 +14,7 @@
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",
-    "lint": "next lint",
-    "check-env": "node scripts/check-env.js"
+    "lint": "next lint"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^9.5.0",

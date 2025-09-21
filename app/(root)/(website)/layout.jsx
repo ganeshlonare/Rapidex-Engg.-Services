@@ -1,6 +1,5 @@
 import Footer from '@/components/Application/Website/Footer'
 import Header from '@/components/Application/Website/Header'
-import MetadataDebugger from '@/components/SEO/MetadataDebugger'
 import React from 'react'
 import { Kumbh_Sans } from 'next/font/google'
 
@@ -18,7 +17,6 @@ const layout = ({ children }) => {
                 {children}
             </main>
             <Footer />
-            <MetadataDebugger />
         </div>
     )
 }
