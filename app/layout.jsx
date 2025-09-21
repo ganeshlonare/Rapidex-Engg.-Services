@@ -41,15 +41,20 @@ export const metadata = {
         width: 1200,
         height: 630,
         alt: siteConfig.name,
+        type: 'image/png'
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
+    site: siteConfig.social.twitter,
+    creator: siteConfig.social.twitter,
     title: siteConfig.name,
     description: siteConfig.description,
-    images: [`${siteConfig.url}${siteConfig.ogImage}`],
-    creator: siteConfig.social.twitter,
+    images: [{
+      url: `${siteConfig.url}${siteConfig.ogImage}`,
+      alt: siteConfig.name,
+    }],
   },
   alternates: {
     canonical: siteConfig.url,
@@ -57,6 +62,15 @@ export const metadata = {
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION,
   },
+  // Additional meta tags for better social sharing
+  other: {
+    'og:image:width': '1200',
+    'og:image:height': '630',
+    'og:image:type': 'image/png',
+    'twitter:image:alt': siteConfig.name,
+    'og:site_name': siteConfig.name,
+    'application-name': siteConfig.name,
+  }
 };
 
 export default function RootLayout({ children }) {
