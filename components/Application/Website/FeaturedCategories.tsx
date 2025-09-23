@@ -1,15 +1,22 @@
-import axios from 'axios';
 import Link from 'next/link'
 import React from 'react'
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { WEBSITE_SHOP } from '@/routes/WebsiteRoute';
 import Image from 'next/image'
 
+const getBaseUrl = () => {
+    if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL
+    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
+    return 'http://localhost:3000'
+}
+
 const FeaturedCategories = async () => {
     let categoryData = null
     try {
-        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/category/get-category`)
-        categoryData = data
+        const baseUrl = getBaseUrl()
+        const res = await fetch(`${baseUrl}/api/category/get-category`, { cache: 'no-store' })
+        if (!res.ok) throw new Error('Failed to fetch categories')
+        categoryData = await res.json()
     } catch (error) {
         // swallow error and render nothing
     }

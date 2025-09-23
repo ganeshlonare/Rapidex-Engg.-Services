@@ -1,10 +1,15 @@
-import axios from 'axios'
 import React from 'react'
 import { generateBreadcrumbSchema } from '@/lib/seo'
 import StructuredData from '@/components/SEO/StructuredData'
 import { notFound } from 'next/navigation'
 import ProductBox from '@/components/Application/Website/ProductBox'
 import { Metadata } from 'next'
+
+const getBaseUrl = () => {
+    if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL
+    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
+    return 'http://localhost:3000'
+}
 
 interface PageProps {
     params: {
@@ -17,10 +22,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const { slug } = params
     
     try {
-        const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/category/details/${slug}`
-        const { data: getCategory } = await axios.get(url)
-        
-        if (!getCategory.success || !getCategory.data?.category) {
+        const baseUrl = getBaseUrl()
+        const res = await fetch(`${baseUrl}/api/category/get-category`, { cache: 'no-store' })
+        if (!res.ok) throw new Error('Failed to fetch categories')
+        const getCategory = await res.json()
+        const category = Array.isArray(getCategory.data) ? getCategory.data.find((c) => c.slug === slug) : null
+
+        if (!getCategory.success || !category) {
             return {
                 title: 'Category Not Found | Rapidex Engineering Services',
                 description: 'The requested category could not be found.',
@@ -28,7 +36,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
             }
         }
         
-        const category = getCategory.data.category
         return {
             metadataBase: new URL('https://www.rapidex.tech'),
             title: `${category.name} - Industrial Components & Parts | Rapidex Engineering Services`,
@@ -38,13 +45,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
                 title: `${category.name} - Industrial Components & Parts | Rapidex Engineering Services`,
                 description: `Shop ${category.name} products including industrial components, robotics parts, and automation solutions. Quality guaranteed with fast shipping.`,
                 url: `/category/${slug}`,
-                images: [category.image?.url || "/assets/images/rapidex-social-share.png"],
+                images: [category.media?.secure_url || "/assets/images/rapidex-social-share.png"],
             },
             twitter: {
                 card: "summary_large_image",
                 title: `${category.name} - Industrial Components & Parts | Rapidex Engineering Services`,
                 description: `Shop ${category.name} products including industrial components, robotics parts, and automation solutions. Quality guaranteed with fast shipping.`,
-                images: [category.image?.url || "/assets/images/rapidex-social-share.png"],
+                images: [category.media?.secure_url || "/assets/images/rapidex-social-share.png"],
             },
             alternates: {
                 canonical: `/category/${slug}`,
@@ -63,20 +70,23 @@ const CategoryPage = async ({ params }: PageProps) => {
     const { slug } = params
 
     try {
-        // Fetch category details
-        const categoryUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/category/details/${slug}`
-        const { data: getCategory } = await axios.get(categoryUrl)
+        const baseUrl = getBaseUrl()
+        // Fetch categories and find the matching one
+        const catRes = await fetch(`${baseUrl}/api/category/get-category`, { cache: 'no-store' })
+        if (!catRes.ok) throw new Error('Failed to fetch categories')
+        const categories = await catRes.json()
+        const category = Array.isArray(categories.data) ? categories.data.find((c) => c.slug === slug) : null
 
-        if (!getCategory.success || !getCategory.data?.category) {
+        if (!categories.success || !category) {
             notFound()
         }
 
-        // Fetch products in this category
-        const productsUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/by-category/${slug}`
-        const { data: getProducts } = await axios.get(productsUrl)
+        // Fetch products for this category via shop endpoint
+        const shopRes = await fetch(`${baseUrl}/api/shop?category=${encodeURIComponent(slug)}&limit=60`, { cache: 'no-store' })
+        if (!shopRes.ok) throw new Error('Failed to fetch products')
+        const shopData = await shopRes.json()
 
-        const category = getCategory.data.category
-        const products = getProducts.success ? getProducts.data : []
+        const products = shopData.success ? shopData.data?.products ?? [] : []
 
         // Generate breadcrumb schema
         const breadcrumbSchema = generateBreadcrumbSchema([

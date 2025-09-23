@@ -5,7 +5,20 @@ import Link from "next/link"
 import { WEBSITE_PRODUCT_DETAILS } from "@/routes/WebsiteRoute"
 const OrderDetails = async ({ params }) => {
     const { orderid } = await params
-    const { data: orderData } = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/orders/get/${orderid}`)
+    const getBaseUrl = () => {
+        if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL
+        if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
+        return 'http://localhost:3000'
+    }
+    let orderData: any = null
+    try {
+        const baseUrl = getBaseUrl()
+        const res = await fetch(`${baseUrl}/api/orders/get/${orderid}`, { cache: 'no-store' })
+        if (!res.ok) throw new Error('Failed to fetch order details')
+        orderData = await res.json()
+    } catch (e) {
+        orderData = { success: false }
+    }
 
     return (
         <div>
