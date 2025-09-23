@@ -2,6 +2,8 @@ import { connectDB } from "@/lib/databaseConnection";
 import { catchError, response } from "@/lib/helperFunction";
 
 import CategoryModel from "@/models/Category.model";
+// Side-effect import to ensure model is registered for populate
+import "@/models/Media.model";
 
 export async function GET() {
     try {
@@ -12,13 +14,13 @@ export async function GET() {
             .populate({ path: 'media', select: 'secure_url alt title' })
             .lean()
 
-        if (!getCategory) {
-            return response(false, 404, 'Category not found.')
+        if (!getCategory || getCategory.length === 0) {
+            return response(false, 404, 'Category not found.', [])
         }
 
         return response(true, 200, 'Category found.', getCategory)
 
-    } catch (error) {
-        return catchError(error)
+    } catch (error: any) {
+        return catchError(error, 'Failed to fetch categories')
     }
 }

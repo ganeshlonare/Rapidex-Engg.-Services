@@ -17,7 +17,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const { slug } = params
     
     try {
-        const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/details/${slug}`
+        // Use API base directly; it already contains '/api'
+        const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/product/details/${slug}`
         const { data: getProduct } = await axios.get(url)
         
         if (!getProduct.success || !getProduct.data?.product) {

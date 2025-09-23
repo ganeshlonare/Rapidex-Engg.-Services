@@ -26,18 +26,21 @@ import ProductReveiw from "@/components/Application/Website/ProductReveiw";
 const ProductDetails = ({ product, variant, reviewCount }) => {
 
     const dispatch = useDispatch()
-    const cartStore = useSelector(store => store.cartStore)
+    const cartStore = useSelector((store: any) => store.cartStore)
     
-    const [activeThumb, setActiveThumb] = useState()
+    const [activeThumb, setActiveThumb] = useState<string | undefined>(undefined)
     const [qty, setQty] = useState(1)
     const [isAddedIntoCart, setIsAddedIntoCart] = useState(false)
     const [isProductLoading, setIsProductLoading] = useState(false)
     useEffect(() => {
-        setActiveThumb(variant?.media[0]?.secure_url)
-    }, [variant])
+        // Prefer variant media; fallback to product media; then placeholder
+        const firstVariantImage = variant?.media?.[0]?.secure_url
+        const firstProductImage = product?.media?.[0]?.secure_url
+        setActiveThumb(firstVariantImage || firstProductImage || imgPlaceholder.src)
+    }, [variant, product])
 
     useEffect(() => {
-        if (cartStore.count > 0) {
+        if (cartStore.count > 0 && variant) {
             const existingProduct = cartStore.products.findIndex((cartProduct) => cartProduct.productId === product._id && cartProduct.variantId === variant._id)
 
             if (existingProduct >= 0) {
@@ -69,12 +72,12 @@ const ProductDetails = ({ product, variant, reviewCount }) => {
     const handleAddToCart = () => {
         const cartProduct = {
             productId: product._id,
-            variantId: variant._id,
+            variantId: variant?._id || product._id, // Use product ID if no variant
             name: product.name,
             url: product.slug,
-            mrp: variant.mrp,
-            sellingPrice: variant.sellingPrice,
-            media: variant?.media[0]?.secure_url,
+            mrp: variant?.mrp || product.mrp,
+            sellingPrice: variant?.sellingPrice || product.sellingPrice,
+            media: imgPlaceholder.src, // Use placeholder for now
             qty: qty
         }
 
@@ -124,15 +127,15 @@ const ProductDetails = ({ product, variant, reviewCount }) => {
                         />
                     </div>
                     <div className="flex xl:flex-col items-center xl:gap-5 gap-3 xl:w-36 overflow-auto xl:pb-0 pb-2 max-h-[600px]">
-                        {variant?.media?.map((thumb) => (
+                        {(variant?.media?.length ? variant.media : (product?.media || [])).map((thumb: any, idx: number) => (
                             <Image
-                                key={thumb._id}
+                                key={thumb?._id || idx}
                                 src={thumb?.secure_url || imgPlaceholder.src}
                                 width={100}
                                 height={100}
                                 alt="product thumbnail"
-                                className={`md:max-w-full max-w-16 rounded cursor-pointer ${thumb.secure_url === activeThumb ? 'border-2 border-primary' : 'border'}`}
-                                onClick={() => handleThumb(thumb.secure_url)}
+                                className={`md:max-w-full max-w-16 rounded cursor-pointer ${thumb?.secure_url === activeThumb ? 'border-2 border-primary' : 'border'}`}
+                                onClick={() => handleThumb(thumb?.secure_url || imgPlaceholder.src)}
                             />
                         ))}
                     </div>
@@ -147,13 +150,10 @@ const ProductDetails = ({ product, variant, reviewCount }) => {
                         <span className="text-sm ps-2">({reviewCount} Reviews)</span>
                     </div>
                     <div className="flex items-center gap-2 mb-3">
-                        <span className="text-xl font-semibold">{variant.sellingPrice.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</span>
-                        <span className="text-sm line-through text-gray-500">{variant.mrp.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</span>
+                        <span className="text-xl font-semibold">{(variant?.sellingPrice || product.sellingPrice).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</span>
+                        <span className="text-sm line-through text-gray-500">{(variant?.mrp || product.mrp).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</span>
 
-
-                        <span className="bg-red-500 rounded-2xl px-3 py-1 text-white text-xs ms-5">-{variant.discountPercentage}%</span>
-
-
+                        <span className="bg-red-500 rounded-2xl px-3 py-1 text-white text-xs ms-5">-{variant?.discountPercentage || product.discountPercentage}%</span>
                     </div>
 
                     <div className="line-clamp-3" dangerouslySetInnerHTML={{ __html: decode(product.description) }}></div>
@@ -177,9 +177,9 @@ const ProductDetails = ({ product, variant, reviewCount }) => {
 
                     <div className="mt-5">
                         {!isAddedIntoCart ?
-                            <ButtonLoading type="button" text="Add To Cart" className="w-full rounded-full py-6 text-md cursor-pointer" onClick={handleAddToCart} />
-                            :
-                            <Button className="w-full rounded-full py-6 text-md cursor-pointer" type="button" asChild>
+                            <ButtonLoading type="button" text="Add To Cart" loading={false} className="w-full rounded-full py-6 text-md cursor-pointer" onClick={handleAddToCart} />
+                        :
+                            <Button variant="default" size="default" className="w-full rounded-full py-6 text-md cursor-pointer" type="button" asChild>
                                 <Link href={WEBSITE_CART}>Go To Cart</Link>
                             </Button>
                         }
