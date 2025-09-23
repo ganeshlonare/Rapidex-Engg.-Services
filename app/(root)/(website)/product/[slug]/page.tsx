@@ -1,10 +1,15 @@
-import axios from 'axios'
 import React from 'react'
 import ProductDetails from './ProductDetails'
 import { generateProductSchema, generateBreadcrumbSchema } from '@/lib/seo'
 import StructuredData, { MultipleStructuredData } from '@/components/SEO/StructuredData'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
+
+const getBaseUrl = () => {
+    if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL
+    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
+    return 'http://localhost:3000'
+}
 
 interface PageProps {
     params: {
@@ -17,9 +22,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const { slug } = params
     
     try {
-        // Use API base directly; it already contains '/api'
-        const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/product/details/${slug}`
-        const { data: getProduct } = await axios.get(url)
+        const baseUrl = getBaseUrl()
+        const url = `${baseUrl}/api/product/details/${slug}`
+        const res = await fetch(url, { cache: 'no-store' })
+        if (!res.ok) throw new Error(`Failed to fetch product: ${res.status}`)
+        const getProduct = await res.json()
         
         if (!getProduct.success || !getProduct.data?.product) {
             return {
@@ -125,10 +132,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 const ProductPage = async ({ params }: PageProps) => {
     const { slug } = params
 
-    let url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/product/details/${slug}`
-
     try {
-        const { data: getProduct } = await axios.get(url)
+        const baseUrl = getBaseUrl()
+        const url = `${baseUrl}/api/product/details/${slug}`
+        const res = await fetch(url, { cache: 'no-store' })
+        if (!res.ok) throw new Error(`Failed to fetch product: ${res.status}`)
+        const getProduct = await res.json()
 
         if (!getProduct.success || !getProduct.data?.product) {
             notFound()
