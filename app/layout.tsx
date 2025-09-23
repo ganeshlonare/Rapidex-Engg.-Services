@@ -5,7 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import { siteConfig, generateOrganizationSchema, generateWebsiteSchema } from '../lib/seo';
 import StructuredData, { MultipleStructuredData } from '@/components/SEO/StructuredData';
 import { GoogleAnalytics, FacebookPixel, GoogleTagManager } from '@/components/SEO/Analytics';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 const assistantFont = Assistant({
   weight: ['400', '500', '600', '700', '800'],
@@ -102,16 +102,6 @@ export const metadata: Metadata = {
   category: 'technology',
   classification: 'Industrial Components & Robotics Parts E-commerce',
   referrer: 'origin-when-cross-origin',
-  colorScheme: 'light',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f97316' },
-    { media: '(prefers-color-scheme: dark)', color: '#ea580c' },
-  ],
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-  },
   // Additional meta tags for better social sharing and SEO
   other: {
     'og:image:width': '1200',
@@ -126,8 +116,18 @@ export const metadata: Metadata = {
     'mobile-web-app-capable': 'yes',
     'msapplication-TileColor': '#f97316',
     'msapplication-config': '/browserconfig.xml',
-    'theme-color': '#f97316',
   }
+};
+
+export const viewport: Viewport = {
+  colorScheme: 'light',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f97316' },
+    { media: '(prefers-color-scheme: dark)', color: '#ea580c' },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 interface RootLayoutProps {
