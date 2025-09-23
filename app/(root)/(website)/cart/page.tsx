@@ -18,11 +18,11 @@ const CartPage = () => {
     const [discount, setDiscount] = useState(0)
 
     useEffect(() => {
-        const cartProducts = cart.products
+        const cartProducts = (Array.isArray(cart?.products) ? cart.products : []).filter(Boolean)
 
-        const totalAmount = cartProducts.reduce((sum, product) => sum + (product.sellingPrice * product.qty), 0)
+        const totalAmount = cartProducts.reduce((sum, product) => sum + (Number(product?.sellingPrice ?? 0) * Number(product?.qty ?? 0)), 0)
 
-        const discount = cartProducts.reduce((sum, product) => sum + ((product.mrp - product.sellingPrice) * product.qty), 0)
+        const discount = cartProducts.reduce((sum, product) => sum + ((Number(product?.mrp ?? 0) - Number(product?.sellingPrice ?? 0)) * Number(product?.qty ?? 0)), 0)
 
         setSubTotal(totalAmount)
         setDiscount(discount)
@@ -57,19 +57,19 @@ const CartPage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {cart.products.map(product => (
-                                    <tr key={product.variantId} className='md:table-row block border-b'>
+                                {(Array.isArray(cart?.products) ? cart.products : []).filter(Boolean).map((product, idx) => (
+                                    <tr key={product?.variantId ?? idx} className='md:table-row block border-b'>
                                         <td className='p-3'>
                                             <div className='flex items-center gap-5'>
-                                                <Image src={product.media || imgPlaceholder.src} width={60} height={60} alt={product.name} />
+                                                <Image src={(typeof product?.media === 'string' ? product.media : (product?.media?.url ?? imgPlaceholder.src))} width={60} height={60} alt={product?.name || 'Product'} />
                                                 <div>
                                                     <h4 className='text-lg font-medium line-clamp-1'>
-                                                        <Link href={WEBSITE_PRODUCT_DETAILS(product.url)}>
-                                                            {product.name}
+                                                        <Link href={WEBSITE_PRODUCT_DETAILS(product?.url)}>
+                                                            {product?.name || 'Product'}
                                                         </Link>
                                                     </h4>
-                                                    <p className='text-sm'>Color:{product.color}</p>
-                                                    <p className='text-sm'>Size:{product.size}</p>
+                                                    <p className='text-sm'>Color: {product?.color ?? '-'}</p>
+                                                    <p className='text-sm'>Size: {product?.size ?? '-'}</p>
                                                 </div>
                                             </div>
                                         </td>
@@ -77,7 +77,7 @@ const CartPage = () => {
                                         <td className='md:table-cell flex justify-between md:p-3 px-3 pb-2 text-center'>
                                             <span className='md:hidden font-medium'>Price</span>
                                             <span>
-                                                {product.sellingPrice.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
+                                                {Number(product?.sellingPrice ?? 0).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
                                             </span>
                                         </td>
                                         <td className='md:table-cell flex justify-between md:p-3 px-3 pb-2'>
@@ -85,12 +85,12 @@ const CartPage = () => {
                                             <div className='flex justify-center'>
                                                 <div className="flex justify-center items-center md:h-10 h-7 border w-fit rounded-full">
 
-                                                    <button type="button" className="h-full w-10 flex justify-center items-center cursor-pointer" onClick={() => dispatch(decreaseQuantity({ productId: product.productId, variantId: product.variantId }))}>
+                                                    <button type="button" className="h-full w-10 flex justify-center items-center cursor-pointer" onClick={() => product && dispatch(decreaseQuantity({ productId: product.productId, variantId: product.variantId }))}>
                                                         <HiMinus />
                                                     </button>
-                                                    <input type="text" value={product.qty} className="md:w-14 w-8  text-center border-none outline-offset-0" readOnly />
+                                                    <input type="text" value={Number(product?.qty ?? 0)} className="md:w-14 w-8  text-center border-none outline-offset-0" readOnly />
                                                     <button type="button" className="h-full w-10 flex justify-center items-center cursor-pointer"
-                                                        onClick={() => dispatch(increaseQuantity({ productId: product.productId, variantId: product.variantId }))}
+                                                        onClick={() => product && dispatch(increaseQuantity({ productId: product.productId, variantId: product.variantId }))}
                                                     >
                                                         <HiPlus />
                                                     </button>
@@ -102,13 +102,13 @@ const CartPage = () => {
                                         <td className='md:table-cell flex justify-between md:p-3 px-3 pb-2 text-center'>
                                             <span className='md:hidden font-medium'>Total</span>
                                             <span>
-                                                {(product.sellingPrice * product.qty).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
+                                                {(Number(product?.sellingPrice ?? 0) * Number(product?.qty ?? 0)).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
                                             </span>
                                         </td>
 
                                         <td className='md:table-cell flex justify-between md:p-3 px-3 pb-2 text-center'>
                                             <span className='md:hidden font-medium'>Remove</span>
-                                            <button type='button' onClick={() => dispatch(removeFromCart({ productId: product.productId, variantId: product.variantId }))} className='text-red-500'>
+                                            <button type='button' onClick={() => product && dispatch(removeFromCart({ productId: product.productId, variantId: product.variantId }))} className='text-red-500'>
                                                 <IoCloseCircleOutline />
                                             </button>
                                         </td>

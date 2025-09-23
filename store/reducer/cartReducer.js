@@ -10,19 +10,28 @@ export const cartReducer = createSlice({
     reducers: {
         addIntoCart: (state, action) => {
             const payload = action.payload
+            // Guard against invalid or incomplete payloads
+            if (!payload || !payload.productId || !payload.variantId) {
+                return
+            }
             const existingProduct = state.products.findIndex(
-                (product) => product.productId === payload.productId && product.variantId === payload.variantId
+                (product) => product && product.productId === payload.productId && product.variantId === payload.variantId
             )
 
             if (existingProduct < 0) {
-                state.products.push(payload)
-                state.count = state.products.length
+                state.products.push({
+                    ...payload,
+                    qty: typeof payload.qty === 'number' && payload.qty > 0 ? payload.qty : 1,
+                    sellingPrice: Number(payload.sellingPrice) || 0,
+                    mrp: Number(payload.mrp) || Number(payload.sellingPrice) || 0,
+                })
+                state.count = state.products.filter(Boolean).length
             }
         },
         increaseQuantity: (state, action) => {
             const { productId, variantId } = action.payload
             const existingProduct = state.products.findIndex(
-                (product) => product.productId === productId && product.variantId === variantId
+                (product) => product && product.productId === productId && product.variantId === variantId
             )
 
             if (existingProduct >= 0) {
@@ -32,7 +41,7 @@ export const cartReducer = createSlice({
         decreaseQuantity: (state, action) => {
             const { productId, variantId } = action.payload
             const existingProduct = state.products.findIndex(
-                (product) => product.productId === productId && product.variantId === variantId
+                (product) => product && product.productId === productId && product.variantId === variantId
             )
 
             if (existingProduct >= 0) {
@@ -44,9 +53,9 @@ export const cartReducer = createSlice({
         removeFromCart: (state, action) => {
             const { productId, variantId } = action.payload
 
-            state.products = state.products.filter((product) => !(product.productId === productId && product.variantId === variantId))
+            state.products = state.products.filter((product) => product && !(product.productId === productId && product.variantId === variantId))
 
-            state.count = state.products.length
+            state.count = state.products.filter(Boolean).length
         },
         clearCart: (state, action) => {
             state.products = []

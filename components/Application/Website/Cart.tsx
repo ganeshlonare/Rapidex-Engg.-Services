@@ -28,11 +28,11 @@ const Cart = () => {
 
 
     useEffect(() => {
-        const cartProducts = cart.products
+        const cartProducts = (Array.isArray(cart?.products) ? cart.products : []).filter(Boolean)
 
-        const totalAmount = cartProducts.reduce((sum, product) => sum + (product.sellingPrice * product.qty), 0)
+        const totalAmount = cartProducts.reduce((sum, product) => sum + (Number(product?.sellingPrice ?? 0) * Number(product?.qty ?? 0)), 0)
 
-        const discount = cartProducts.reduce((sum, product) => sum + ((product.mrp - product.sellingPrice) * product.qty), 0)
+        const discount = cartProducts.reduce((sum, product) => sum + ((Number(product?.mrp ?? 0) - Number(product?.sellingPrice ?? 0)) * Number(product?.qty ?? 0)), 0)
 
 
         setSubTotal(totalAmount)
@@ -61,34 +61,36 @@ const Cart = () => {
                             Your Cart Is Empty.
                         </div>}
 
-                        {cart.products?.map(product => (
-                            <div key={product.variantId} className="flex justify-between items-center gap-5 mb-4 border-b pb-4">
-                                <div className="flex gap-5 items-center">
-                                    <Image src={product?.media || imgPlaceholder.src} height={100} width={100} alt={product.name} className="w-20 h-20 rounded border" />
+                        {(Array.isArray(cart.products) ? cart.products : [])
+                            .filter(Boolean)
+                            .map((product, idx) => (
+                                <div key={product?.variantId ?? idx} className="flex justify-between items-center gap-5 mb-4 border-b pb-4">
+                                    <div className="flex gap-5 items-center">
+                                        <Image src={(typeof product?.media === 'string' ? product.media : (product?.media?.url ?? imgPlaceholder.src))} height={100} width={100} alt={product?.name || 'Product'} className="w-20 h-20 rounded border" />
 
-                                    <div >
-                                        <h4 className="text-lg mb-1">{product.name}</h4>
-                                        <p className="text-gray-500">
-                                            {product.size}/{product.color}
-                                        </p>
+                                        <div >
+                                            <h4 className="text-lg mb-1">{product?.name || 'Product'}</h4>
+                                            <p className="text-gray-500">
+                                                {product?.size ?? '-'}{product?.color ? `/${product.color}` : ''}
+                                            </p>
+                                        </div>
+
                                     </div>
 
+                                    <div>
+                                        <button type="button" className="text-red-500 underline underline-offset-1 mb-2 cursor-pointer"
+                                            onClick={() => product && dispatch(removeFromCart({ productId: product.productId, variantId: product.variantId }))}
+                                        >
+                                            Remove
+                                        </button>
+
+                                        <p className="font-semibold">
+                                            {Number(product?.qty ?? 0)} X {Number(product?.sellingPrice ?? 0).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
+                                        </p>
+
+                                    </div>
                                 </div>
-
-                                <div>
-                                    <button type="button" className="text-red-500 underline underline-offset-1 mb-2 cursor-pointer"
-                                        onClick={() => dispatch(removeFromCart({ productId: product.productId, variantId: product.variantId }))}
-                                    >
-                                        Remove
-                                    </button>
-
-                                    <p className="font-semibold">
-                                        {product.qty} X {product.sellingPrice.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
-                                    </p>
-
-                                </div>
-                            </div>
-                        ))}
+                            ))}
                     </div>
                     <div className="h-32 border-t pt-5 px-2">
                         <h2 className="flex justify-between items-center text-lg font-semibold"><span >Subtotal</span> <span>{subtotal?.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</span></h2>

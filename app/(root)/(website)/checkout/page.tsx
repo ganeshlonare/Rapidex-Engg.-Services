@@ -23,6 +23,7 @@ import Script from 'next/script'
 import { useRouter } from 'next/navigation'
 
 import loading from '@/public/assets/images/loading.svg'
+import imgPlaceholder from '@/public/assets/images/img-placeholder.webp'
 const breadCrumb = {
     title: 'Checkout',
     links: [
@@ -50,21 +51,23 @@ const Checkout = () => {
     useEffect(() => {
         if (getVerifiedCartData && getVerifiedCartData.success) {
             const cartData = getVerifiedCartData.data
-            setVerifiedCartData(cartData)
+            const validItems = (Array.isArray(cartData) ? cartData : []).filter(Boolean)
+            setVerifiedCartData(validItems)
             dispatch(clearCart())
-            cartData.forEach(cartItem => {
+            validItems.forEach(cartItem => {
                 dispatch(addIntoCart(cartItem))
             });
         }
     }, [getVerifiedCartData])
 
-
     useEffect(() => {
-        const cartProducts = cart.products
+        const cartProducts = (Array.isArray(cart?.products) ? cart.products : []).filter(Boolean)
+        const verifiedProducts = (Array.isArray(verifiedCartData) ? verifiedCartData : []).filter(Boolean)
+        const sourceProducts = cartProducts.length > 0 ? cartProducts : verifiedProducts
 
-        const subTotalAmount = cartProducts.reduce((sum, product) => sum + (product.sellingPrice * product.qty), 0)
+        const subTotalAmount = sourceProducts.reduce((sum, product) => sum + (Number(product?.sellingPrice ?? 0) * Number(product?.qty ?? 0)), 0)
 
-        const discount = cartProducts.reduce((sum, product) => sum + ((product.mrp - product.sellingPrice) * product.qty), 0)
+        const discount = sourceProducts.reduce((sum, product) => sum + ((Number(product?.mrp ?? 0) - Number(product?.sellingPrice ?? 0)) * Number(product?.qty ?? 0)), 0)
 
         setSubTotal(subTotalAmount)
         setDiscount(discount)
@@ -72,7 +75,7 @@ const Checkout = () => {
 
         couponForm.setValue('minShoppingAmount', subTotalAmount)
 
-    }, [cart])
+    }, [cart, verifiedCartData])
 
 
 
@@ -107,7 +110,7 @@ const Checkout = () => {
             setCouponCode(couponForm.getValues('code'))
             setIsCouponApplied(true)
 
-            couponForm.resetField('code', '')
+            couponForm.setValue('code', '')
         } catch (error) {
             showToast('error', error.message)
         } finally {
@@ -140,6 +143,7 @@ const Checkout = () => {
 
     const orderForm = useForm({
         resolver: zodResolver(orderFormSchema),
+        mode: 'onChange',
         defaultValues: {
             name: '',
             email: '',
@@ -164,7 +168,8 @@ const Checkout = () => {
     // get order id 
     const getOrderId = async (amount) => {
         try {
-            const { data: orderIdData } = await axios.post('/api/payment/get-order-id', { amount })
+            const paise = Math.round(Number(amount || 0) * 100)
+            const { data: orderIdData } = await axios.post('/api/payment/get-order-id', { amount: paise })
             if (!orderIdData.success) {
                 throw new Error(orderIdData.message)
             }
@@ -177,7 +182,24 @@ const Checkout = () => {
     }
 
     const placeOrder = async (formData) => {
- 
+        // Validate form
+        const isValid = await orderForm.trigger()
+        if (!isValid) {
+            showToast('error', 'Please complete all required fields.')
+            return
+        }
+        // Guard against invalid amount
+        if (!totalAmount || totalAmount <= 0) {
+            showToast('error', 'Cart amount is invalid. Please review your cart items.')
+            return
+        }
+        // Ensure there are items in cart (either verified or current cart)
+        const hasItems = (Array.isArray(verifiedCartData) && verifiedCartData.length > 0) || (Array.isArray(cart?.products) && cart.products.filter(Boolean).length > 0)
+        if (!hasItems) {
+            showToast('error', 'Your cart is empty. Please add items before placing order.')
+            return
+        }
+
         setPlacingOrder(true)
         try {
             const generateOrderId = await getOrderId(totalAmount)
@@ -186,6 +208,10 @@ const Checkout = () => {
             }
 
             const order_id = generateOrderId.order_id
+
+            if (!process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID) {
+                throw new Error('Payment key missing. Please set NEXT_PUBLIC_RAZORPAY_KEY_ID')
+            }
 
             const razOption = {
                 "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
@@ -240,7 +266,11 @@ const Checkout = () => {
                 }
             }
 
-            const rzp = new Razorpay(razOption)
+            if (typeof window === 'undefined' || !(window as any).Razorpay) {
+                throw new Error('Payment widget not loaded. Please retry in a moment or refresh the page.')
+            }
+            const RazorpayCtor = (window as any).Razorpay
+            const rzp = new RazorpayCtor(razOption)
             rzp.on('payment.failed', function (response) {
                 showToast('error', response.error.description)
             });
@@ -423,7 +453,7 @@ const Checkout = () => {
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormControl>
-                                                        <Textarea placeholder="Enter order note" />
+                                                        <Textarea placeholder="Enter order note" {...field} />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
@@ -434,7 +464,13 @@ const Checkout = () => {
                                     </div>
 
                                     <div className='mb-3'>
-                                        <ButtonLoading type="submit" text="Place Order" loading={placingOrder} className="btn-orange rounded-full px-5 cursor-pointer" />
+                                        <ButtonLoading
+                                            type="submit"
+                                            text="Place Order"
+                                            loading={placingOrder}
+                                            disabled={placingOrder}
+                                            className="btn-orange rounded-full px-5 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                                        />
                                     </div>
 
                                 </form>
@@ -449,11 +485,11 @@ const Checkout = () => {
 
                                 <table className='w-full border'>
                                     <tbody>
-                                        {verifiedCartData && verifiedCartData?.map(product => (
+                                        {Array.isArray(verifiedCartData) && verifiedCartData.map(product => (
                                             <tr key={product.variantId}>
                                                 <td className='p-3'>
                                                     <div className='flex items-center gap-5'>
-                                                        <Image src={product.media} width={60} height={60} alt={product.name} className='rounded' />
+                                                        <Image src={(typeof product?.media === 'string' ? product.media : (product?.media?.url ?? imgPlaceholder.src))} width={60} height={60} alt={product?.name || 'Product'} className='rounded' />
                                                         <div>
                                                             <h4 className='font-medium line-clamp-1'>
                                                                 <Link href={WEBSITE_PRODUCT_DETAILS(product.url)}>{product.name}</Link>
@@ -465,7 +501,7 @@ const Checkout = () => {
                                                 </td>
                                                 <td className='p-3 text-center'>
                                                     <p className='text-nowrap text-sm'>
-                                                        {product.qty} x {product.sellingPrice.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
+                                                        {Number(product.qty)} x {Number(product.sellingPrice).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
                                                     </p>
                                                 </td>
                                             </tr>
@@ -547,7 +583,7 @@ const Checkout = () => {
                 </div>
             }
 
-            <Script src='https://checkout.razorpay.com/v1/checkout.js' />
+            <Script src='https://checkout.razorpay.com/v1/checkout.js' strategy="afterInteractive" />
         </div>
     )
 }
