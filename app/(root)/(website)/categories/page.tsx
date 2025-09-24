@@ -1,16 +1,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { WEBSITE_SHOP } from '@/routes/WebsiteRoute'
+import getBaseUrl from '@/lib/getBaseUrl'
 
 export const metadata = {
   title: 'All Categories',
   description: 'Browse all product categories',
-}
-
-const getBaseUrl = () => {
-  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
-  return 'http://localhost:3000'
 }
 
 const AllCategoriesPage = async () => {

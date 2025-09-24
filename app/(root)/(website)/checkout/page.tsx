@@ -21,6 +21,7 @@ import { FaShippingFast } from "react-icons/fa";
 import { Textarea } from '@/components/ui/textarea'
 import Script from 'next/script'
 import { useRouter } from 'next/navigation'
+import getImageSrc from '@/lib/getImageSrc'
 
 import loading from '@/public/assets/images/loading.svg'
 import imgPlaceholder from '@/public/assets/images/img-placeholder.webp'
@@ -53,10 +54,6 @@ const Checkout = () => {
             const cartData = getVerifiedCartData.data
             const validItems = (Array.isArray(cartData) ? cartData : []).filter(Boolean)
             setVerifiedCartData(validItems)
-            dispatch(clearCart())
-            validItems.forEach(cartItem => {
-                dispatch(addIntoCart(cartItem))
-            });
         }
     }, [getVerifiedCartData])
 
@@ -284,6 +281,11 @@ const Checkout = () => {
         }
     }
 
+    // Determine products to display and whether there are items, considering both cart and verified data
+    const cartProducts = (Array.isArray(cart?.products) ? cart.products : []).filter(Boolean)
+    const displayProducts = (Array.isArray(verifiedCartData) && verifiedCartData.length > 0) ? verifiedCartData : cartProducts
+    const hasItems = displayProducts.length > 0
+
     return (
         <div>
 
@@ -296,7 +298,7 @@ const Checkout = () => {
                 </div>
             }
 
-            {cart.count === 0
+            {!hasItems
                 ?
                 <div className='w-screen h-[500px] flex justify-center items-center py-32'>
                     <div className='text-center'>
@@ -485,11 +487,11 @@ const Checkout = () => {
 
                                 <table className='w-full border'>
                                     <tbody>
-                                        {Array.isArray(verifiedCartData) && verifiedCartData.map(product => (
+                                        {Array.isArray(displayProducts) && displayProducts.map(product => (
                                             <tr key={product.variantId}>
                                                 <td className='p-3'>
                                                     <div className='flex items-center gap-5'>
-                                                        <Image src={(typeof product?.media === 'string' ? product.media : (product?.media?.url ?? imgPlaceholder.src))} width={60} height={60} alt={product?.name || 'Product'} className='rounded' />
+                                                        <Image src={getImageSrc(product?.media)} width={60} height={60} alt={product?.name || 'Product'} className='rounded' />
                                                         <div>
                                                             <h4 className='font-medium line-clamp-1'>
                                                                 <Link href={WEBSITE_PRODUCT_DETAILS(product.url)}>{product.name}</Link>

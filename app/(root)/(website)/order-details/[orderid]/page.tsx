@@ -3,13 +3,9 @@ import Image from "next/image"
 import placeholderImg from '@/public/assets/images/img-placeholder.webp'
 import Link from "next/link"
 import { WEBSITE_PRODUCT_DETAILS } from "@/routes/WebsiteRoute"
+import getBaseUrl from '@/lib/getBaseUrl'
 const OrderDetails = async ({ params }) => {
     const { orderid } = await params
-    const getBaseUrl = () => {
-        if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL
-        if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
-        return 'http://localhost:3000'
-    }
     let orderData: any = null
     try {
         const baseUrl = getBaseUrl()

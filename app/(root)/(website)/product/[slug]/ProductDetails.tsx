@@ -70,6 +70,13 @@ const ProductDetails = ({ product, variant, reviewCount }) => {
 
 
     const handleAddToCart = () => {
+        // Prefer variant media array; fallback to product media array; finally placeholder string
+        const mediaForCart = (variant?.media && Array.isArray(variant.media) && variant.media.length > 0)
+            ? variant.media
+            : ((product?.media && Array.isArray(product.media) && product.media.length > 0)
+                ? product.media
+                : imgPlaceholder.src)
+
         const cartProduct = {
             productId: product._id,
             variantId: variant?._id || product._id, // Use product ID if no variant
@@ -77,7 +84,7 @@ const ProductDetails = ({ product, variant, reviewCount }) => {
             url: product.slug,
             mrp: variant?.mrp || product.mrp,
             sellingPrice: variant?.sellingPrice || product.sellingPrice,
-            media: imgPlaceholder.src, // Use placeholder for now
+            media: mediaForCart,
             qty: qty
         }
 

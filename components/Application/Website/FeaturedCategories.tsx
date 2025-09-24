@@ -3,12 +3,7 @@ import React from 'react'
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { WEBSITE_SHOP } from '@/routes/WebsiteRoute';
 import Image from 'next/image'
-
-const getBaseUrl = () => {
-    if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL
-    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
-    return 'http://localhost:3000'
-}
+import getBaseUrl from '@/lib/getBaseUrl'
 
 const FeaturedCategories = async () => {
     let categoryData = null

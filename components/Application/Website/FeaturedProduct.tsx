@@ -2,12 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 import { IoIosArrowRoundForward } from "react-icons/io";
 import ProductBox from './ProductBox';
-
-const getBaseUrl = () => {
-    if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL
-    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
-    return 'http://localhost:3000'
-}
+import getBaseUrl from '@/lib/getBaseUrl'
 
 const FeaturedProduct = async () => {
     let productData = null

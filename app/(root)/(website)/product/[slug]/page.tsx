@@ -4,12 +4,7 @@ import { generateProductSchema, generateBreadcrumbSchema } from '@/lib/seo'
 import StructuredData, { MultipleStructuredData } from '@/components/SEO/StructuredData'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
-
-const getBaseUrl = () => {
-    if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL
-    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
-    return 'http://localhost:3000'
-}
+import getBaseUrl from '@/lib/getBaseUrl'
 
 interface PageProps {
     params: {

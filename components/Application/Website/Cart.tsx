@@ -17,6 +17,7 @@ import { WEBSITE_CART, WEBSITE_CHECKOUT } from "@/routes/WebsiteRoute";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { showToast } from "@/lib/showToast";
+import getImageSrc from '@/lib/getImageSrc'
 const Cart = () => {
     const [open, setOpen] = useState(false)
     const [subtotal, setSubTotal] = useState(0)
@@ -66,7 +67,7 @@ const Cart = () => {
                             .map((product, idx) => (
                                 <div key={product?.variantId ?? idx} className="flex justify-between items-center gap-5 mb-4 border-b pb-4">
                                     <div className="flex gap-5 items-center">
-                                        <Image src={(typeof product?.media === 'string' ? product.media : (product?.media?.url ?? imgPlaceholder.src))} height={100} width={100} alt={product?.name || 'Product'} className="w-20 h-20 rounded border" />
+                                        <Image src={getImageSrc(product?.media)} height={100} width={100} alt={product?.name || 'Product'} className="w-20 h-20 rounded border" />
 
                                         <div >
                                             <h4 className="text-lg mb-1">{product?.name || 'Product'}</h4>
