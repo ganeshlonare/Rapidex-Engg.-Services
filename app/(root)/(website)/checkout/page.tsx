@@ -165,8 +165,8 @@ const Checkout = () => {
     // get order id 
     const getOrderId = async (amount) => {
         try {
-            const paise = Math.round(Number(amount || 0) * 100)
-            const { data: orderIdData } = await axios.post('/api/payment/get-order-id', { amount: paise })
+            // Send amount in rupees, the API will convert to paise
+            const { data: orderIdData } = await axios.post('/api/payment/get-order-id', { amount: Number(amount || 0) })
             if (!orderIdData.success) {
                 throw new Error(orderIdData.message)
             }
@@ -212,7 +212,7 @@ const Checkout = () => {
 
             const razOption = {
                 "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-                "amount": totalAmount * 100,
+                "amount": Math.round(totalAmount * 100), // Convert rupees to paise (same as order creation)
                 "currency": "INR",
                 "name": "Rapidex",
                 "description": "Payment for order",
