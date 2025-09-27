@@ -26,7 +26,7 @@ export async function POST(request) {
 
 
         const razOption = {
-            amount: Number(amount), // Keep amount in rupees, no conversion to paise
+            amount: Number(amount)*100, // Keep amount in rupees, no conversion to paise
             currency: 'INR'
         }
 
