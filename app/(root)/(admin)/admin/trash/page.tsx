@@ -1,5 +1,7 @@
 'use client'
 import BreadCrumb from "@/components/Application/Admin/BreadCrumb"
+
+export const dynamic = 'force-dynamic'
 import DatatableWrapper from "@/components/Application/Admin/DatatableWrapper"
 import DeleteAction from "@/components/Application/Admin/DeleteAction"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
@@ -78,7 +80,7 @@ const Trash = () => {
 
     const columns = useMemo(() => {
         return columnConfig(config.columns, false, false, true)
-    }, [])
+    }, [config.columns])
 
     const action = useCallback((row, deleteType, handleDelete) => {
         return [<DeleteAction key="delete" handleDelete={handleDelete} row={row} deleteType={deleteType} />]
@@ -103,6 +105,7 @@ const Trash = () => {
                         exportEndpoint={config.exportUrl}
                         deleteEndpoint={config.deleteUrl}
                         deleteType="PD"
+                        trashView={true}
                         createAction={action}
                     />
                 </CardContent>

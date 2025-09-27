@@ -17,6 +17,6 @@ export async function GET() {
         return response(true, 200, 'Color found.', getColor)
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

@@ -96,7 +96,7 @@ const Testimonial = () => {
     return (
         <div className='lg:px-32 px-4 sm:pt-20 pt-5 pb-10'>
             <h2 className='text-center sm:text-4xl text-2xl mb-5 font-semibold'>Customer Review</h2>
-            <Slider {...settings}>
+            <Slider {...settings} className="" value={[0]}>
                 {testimonials.map((item, index) => (
                     <div key={index} className="p-5">
                         <div className='border rounded-lg p-5'>

@@ -36,6 +36,6 @@ export async function POST(request) {
         return response(true, 200, 'Order id generated.', order_id)
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Get order ID failed')
     }
 }

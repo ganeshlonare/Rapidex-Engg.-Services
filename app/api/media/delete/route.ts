@@ -22,7 +22,7 @@ export async function PUT(request) {
             return response(false, 400, 'Invalid or empty id list.')
         }
 
-        const media = await MediaModel.find({ _id: { $in: ids } }).lean()
+        const media = await (MediaModel as any).find({ _id: { $in: ids } }).lean()
         if (!media.length) {
             return response(false, 404, 'Data not found.')
         }
@@ -32,9 +32,9 @@ export async function PUT(request) {
         }
 
         if (deleteType === 'SD') {
-            await MediaModel.updateMany({ _id: { $in: ids } }, { $set: { deletedAt: new Date().toISOString() } });
+            await (MediaModel as any).updateMany({ _id: { $in: ids } }, { $set: { deletedAt: new Date().toISOString() } });
         } else {
-            await MediaModel.updateMany({ _id: { $in: ids } }, { $set: { deletedAt: null } });
+            await (MediaModel as any).updateMany({ _id: { $in: ids } }, { $set: { deletedAt: null } });
         }
 
 
@@ -42,7 +42,7 @@ export async function PUT(request) {
         return response(true, 200, deleteType === 'SD' ? 'Data moved into trash.' : "Data restored.")
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }
 
@@ -68,16 +68,16 @@ export async function DELETE(request) {
             return response(false, 400, 'Invalid or empty id list.')
         }
 
-        const media = await MediaModel.find({ _id: { $in: ids } }).session(session).lean()
+        const media = await (MediaModel as any).find({ _id: { $in: ids } }).session(session).lean()
         if (!media.length) {
             return response(false, 404, 'Data not found.')
         }
 
-        if (!deleteType === 'PD') {
+        if (deleteType !== 'PD') {
             return response(false, 400, 'Invalid delet operation. Delete type should be PD for this route.')
         }
 
-        await MediaModel.deleteMany({ _id: { $in: ids } }).session(session)
+        await (MediaModel as any).deleteMany({ _id: { $in: ids } }).session(session)
 
 
         // delete all media from cloudinary.  
@@ -97,6 +97,6 @@ export async function DELETE(request) {
     } catch (error) {
         await session.abortTransaction()
         session.endSession()
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

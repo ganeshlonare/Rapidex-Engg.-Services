@@ -31,9 +31,10 @@ const ModalMediaBlock = ({ media, selectedMedia, setSelectedMedia, isMultiple })
         <label htmlFor={media._id} className='border border-gray-200 dark:border-gray-800 relative group rounded overflow-hidden'>
             <div className='absolute top-2 left-2 z-20'>
                 <Checkbox
+                    className=""
                     id={media._id}
                     checked={selectedMedia.find(m => m._id === media._id) ? true : false}
-                    onCheckedChange={handleCheck}
+                    onCheckedChange={() => handleCheck()}
                 />
             </div>
             <div className='size-full relative'>

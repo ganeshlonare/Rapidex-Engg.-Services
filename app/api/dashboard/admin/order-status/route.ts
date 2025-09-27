@@ -30,7 +30,7 @@ export async function GET() {
 
         return response(true, 200, 'Data found', orderStatus)
 
-    } catch {
-        return catchError(error)
+    } catch (error) {
+        return catchError(error, 'Operation failed')
     }
 }

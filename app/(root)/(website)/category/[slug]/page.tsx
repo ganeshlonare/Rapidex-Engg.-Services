@@ -6,15 +6,10 @@ import ProductBox from '@/components/Application/Website/ProductBox'
 import { Metadata } from 'next'
 import getBaseUrl from '@/lib/getBaseUrl'
 
-interface PageProps {
-    params: {
-        slug: string;
-    };
-}
-
 // Generate metadata for category pages
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-    const { slug } = params
+export async function generateMetadata({ params }: any): Promise<Metadata> {
+    const resolved = await Promise.resolve(params)
+    const { slug } = resolved
     
     try {
         const baseUrl = getBaseUrl()
@@ -61,8 +56,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
 }
 
-const CategoryPage = async ({ params }: PageProps) => {
-    const { slug } = params
+const CategoryPage = async ({ params }: any) => {
+    const resolved = await Promise.resolve(params)
+    const { slug } = resolved
 
     try {
         const baseUrl = getBaseUrl()

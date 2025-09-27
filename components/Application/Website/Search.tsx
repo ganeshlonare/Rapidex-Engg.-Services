@@ -6,9 +6,9 @@ import { useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 
 
-const Search = ({ isShow }) => {
+const Search = ({ isShow }: { isShow: boolean }) => {
     const router = useRouter()
-    const [query, setQuery] = useState()
+    const [query, setQuery] = useState<string>("")
     const handleSearch = () => {
         router.push(`${WEBSITE_SHOP}?q=${query}`)
     }

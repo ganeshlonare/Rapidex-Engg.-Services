@@ -168,8 +168,8 @@ function Sidebar({
           }
           side={side}>
           <SheetHeader className="sr-only">
-            <SheetTitle>Sidebar</SheetTitle>
-            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
+            <SheetTitle className="">Sidebar</SheetTitle>
+            <SheetDescription className="">Displays the mobile sidebar.</SheetDescription>
           </SheetHeader>
           <div className="flex h-full w-full flex-col">{children}</div>
         </SheetContent>
@@ -491,7 +491,7 @@ function SidebarMenuButton({
       data-sidebar="menu-button"
       data-size={size}
       data-active={isActive}
-      className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
+      className={cn(sidebarMenuButtonVariants({ variant: variant as any, size: size as any }), className)}
       {...props} />
   )
 

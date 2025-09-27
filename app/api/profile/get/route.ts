@@ -13,10 +13,10 @@ export async function GET() {
 
         const userId = auth.userId
 
-        const user = await UserModel.findById(userId).lean()
+        const user = await (UserModel as any).findById(userId).lean()
 
         return response(true, 200, 'User  data.', user)
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

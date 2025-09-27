@@ -110,8 +110,8 @@ export const DT_CUSTOMERS_COLUMN = [
         accessorKey: 'avatar',
         header: 'Avatar',
         Cell: ({ renderedCellValue }) => (
-            <Avatar>
-                <AvatarImage src={renderedCellValue?.url || userIcon.src} />
+            <Avatar className="">
+                <AvatarImage className="" src={renderedCellValue?.url || userIcon.src} />
             </Avatar>
         )
     },

@@ -12,7 +12,6 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import {
-    ChartConfig,
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent,
@@ -78,7 +77,7 @@ export function OrderOverview() {
  
     return (
         <div>
-            <ChartContainer config={chartConfig}>
+            <ChartContainer id="order-overview" className="" config={chartConfig}>
                 <BarChart accessibilityLayer data={chartData}>
                     <CartesianGrid vertical={false} />
                     <XAxis
@@ -90,7 +89,7 @@ export function OrderOverview() {
                     />
                     <ChartTooltip
                         cursor={true}
-                        content={<ChartTooltipContent />}
+                        content={(props) => <ChartTooltipContent {...props} />}
                     />
                     <Bar dataKey="amount" fill="var(--color-amount)" radius={5} />
                 </BarChart>

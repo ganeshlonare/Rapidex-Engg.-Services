@@ -26,7 +26,7 @@ export async function POST(request) {
         const { name, slug } = validate.data
         const media = payload?.media || null
 
-        const newCategory = new CategoryModel({
+        const newCategory = new (CategoryModel as any)({
             name,
             slug,
             ...(media ? { media } : {})
@@ -37,6 +37,6 @@ export async function POST(request) {
         return response(true, 200, 'Category added successfully.')
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Category creation failed')
     }
 }

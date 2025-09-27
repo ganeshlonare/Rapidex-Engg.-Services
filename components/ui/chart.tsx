@@ -54,8 +54,8 @@ function ChartContainer({
 const ChartStyle = ({
   id,
   config
-}) => {
-  const colorConfig = Object.entries(config).filter(([, config]) => config.theme || config.color)
+}: any) => {
+  const colorConfig = (Object.entries(config as any) as [string, any][])?.filter(([, cfg]) => cfg?.theme || cfg?.color)
 
   if (!colorConfig.length) {
     return null
@@ -68,10 +68,10 @@ const ChartStyle = ({
           .map(([theme, prefix]) => `
 ${prefix} [data-chart=${id}] {
 ${colorConfig
-.map(([key, itemConfig]) => {
+.map(([key, itemConfig]: [string, any]) => {
 const color =
-  itemConfig.theme?.[theme] ||
-  itemConfig.color
+  itemConfig?.theme?.[theme] ||
+  itemConfig?.color
 return color ? `  --color-${key}: ${color};` : null
 })
 .join("\n")}
@@ -84,21 +84,22 @@ return color ? `  --color-${key}: ${color};` : null
 
 const ChartTooltip = RechartsPrimitive.Tooltip
 
-function ChartTooltipContent({
-  active,
-  payload,
-  className,
-  indicator = "dot",
-  hideLabel = false,
-  hideIndicator = false,
-  label,
-  labelFormatter,
-  labelClassName,
-  formatter,
-  color,
-  nameKey,
-  labelKey
-}) {
+function ChartTooltipContent(props?: any) {
+  const {
+    active,
+    payload,
+    className,
+    indicator = "dot",
+    hideLabel = false,
+    hideIndicator = false,
+    label,
+    labelFormatter,
+    labelClassName,
+    formatter,
+    color,
+    nameKey,
+    labelKey,
+  } = props || {}
   const { config } = useChart()
 
   const tooltipLabel = React.useMemo(() => {
@@ -179,12 +180,10 @@ function ChartTooltipContent({
                             indicator === "dashed",
                           "my-0.5": nestLabel && indicator === "dashed",
                         })}
-                        style={
-                          {
-                            "--color-bg": indicatorColor,
-                            "--color-border": indicatorColor
-                          }
-                        } />
+                        style={{
+                          "--color-bg": indicatorColor as any,
+                          "--color-border": indicatorColor as any,
+                        } as React.CSSProperties as any} />
                     )
                   )}
                   <div

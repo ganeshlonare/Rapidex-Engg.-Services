@@ -54,7 +54,7 @@ export async function POST(request) {
             paymentVerification = true
         }
 
-        const newOrder = await OrderModel.create({
+        const newOrder = await (OrderModel as any).create({
             user: validatedData.userId,
             name: validatedData.name,
             email: validatedData.email,
@@ -91,7 +91,7 @@ export async function POST(request) {
         return response(true, 200, 'Order placed successfully.')
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Save order failed')
     }
 
 }

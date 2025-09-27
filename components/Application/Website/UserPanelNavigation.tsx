@@ -20,7 +20,7 @@ const UserPanelNavigation = () => {
                 throw new Error(logoutResponse.message)
             }
 
-            dispatch(logout())
+            dispatch(logout({}))
             showToast('success', logoutResponse.message)
             router.push(WEBSITE_LOGIN)
         } catch (error) {

@@ -12,11 +12,11 @@ export async function GET(request) {
 
         await connectDB()
 
-        const filter = {
+        const filter: any = {
             deletedAt: null
         }
 
-        const getCoupon = await CouponModel.find(filter).sort({ createdAt: -1 }).lean()
+        const getCoupon = await (CouponModel as any).find(filter).sort({ createdAt: -1 }).lean()
 
         if (!getCoupon) {
             return response(false, 404, 'Collection empty.')
@@ -26,6 +26,6 @@ export async function GET(request) {
 
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

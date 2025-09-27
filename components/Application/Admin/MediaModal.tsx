@@ -46,20 +46,19 @@ const MediaModal = ({ open, setOpen, selectedMedia, setSelectedMedia, isMultiple
         setPreviouslySelected(selectedMedia)
         setOpen(false)
     }
-
     return (
         <Dialog
             open={open}
             onOpenChange={() => setOpen(!open)}
         >
             <DialogContent onInteractOutside={(e) => e.preventDefault()}
-                className="sm:max-w-[80%] h-screen p-0 py-10 bg-transparent border-0 shadow-none"
+                className="sm:max-w-[80%] h-screen p-0 py-10 bg-transparent border-0 shadow-none dark:bg-card dark:border-card"
             >
                 <DialogDescription className="hidden"></DialogDescription>
 
                 <div className='h-[90vh] bg-white dark:bg-card p-3 rounded shadow'>
-                    <DialogHeader className="h-8 border-b">
-                        <DialogTitle>Media Selection</DialogTitle>
+                    <DialogHeader className="">
+                        <DialogTitle className="">Media Selection</DialogTitle>
                     </DialogHeader>
 
                     <div className='h-[calc(100%-80px)] overflow-auto py-2'>

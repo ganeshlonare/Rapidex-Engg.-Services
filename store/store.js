@@ -1,7 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import persistReducer from "redux-persist/es/persistReducer"
 import persistStore from "redux-persist/es/persistStore"
-import localStorage from "redux-persist/es/storage"
+import createWebStorage from "redux-persist/lib/storage/createWebStorage"
 import authReducer from "./reducer/authReducer"
 import cartReducer  from "./reducer/cartReducer"
 
@@ -13,7 +13,14 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
     key: 'root',
-    storage: localStorage
+    // Use SSR-safe storage: web storage on client, noop storage on server
+    storage: typeof window !== 'undefined'
+        ? createWebStorage('local')
+        : {
+            getItem() { return Promise.resolve(null) },
+            setItem() { return Promise.resolve() },
+            removeItem() { return Promise.resolve() }
+        }
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

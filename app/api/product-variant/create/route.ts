@@ -33,7 +33,7 @@ export async function POST(request) {
 
         const variantData = validate.data
 
-        const newProductVariant = new ProductVariantModel({
+        const newProductVariant = new (ProductVariantModel as any)({
             product: variantData.product,
             color: variantData.color,
             size: variantData.size,
@@ -49,6 +49,6 @@ export async function POST(request) {
         return response(true, 200, 'Product Variant added successfully.')
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

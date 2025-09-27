@@ -13,7 +13,7 @@ import getImageSrc from '@/lib/getImageSrc'
 
 const CartPage = () => {
     const dispatch = useDispatch()
-    const cart = useSelector(store => store.cartStore)
+    const cart = useSelector((store: any) => store.cartStore)
 
     const [subtotal, setSubTotal] = useState(0)
     const [discount, setDiscount] = useState(0)

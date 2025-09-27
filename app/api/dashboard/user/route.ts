@@ -17,7 +17,7 @@ export async function GET() {
         const userId = auth.userId
 
         // get recent orders 
-        const recentOrders = await OrderModel.find({ user: userId }).populate('products.productId', 'name slug').populate({
+        const recentOrders = await (OrderModel as any).find({ user: userId }).populate('products.productId', 'name slug').populate({
             path: 'products.variantId',
             populate: { path: 'media' }
         }).limit(10).lean()
@@ -28,6 +28,6 @@ export async function GET() {
         return response(true, 200, 'Dashboard info.', { recentOrders, totalOrder })
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

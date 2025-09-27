@@ -19,7 +19,7 @@ export async function POST(request) {
 
         const { code, minShoppingAmount } = validate.data
 
-        const couponData = await CouponModel.findOne({ code }).lean()
+        const couponData = await (CouponModel as any).findOne({ code }).lean()
         if (!couponData) {
             return response(false, 400, 'Invalid or expired coupon code.')
         }
@@ -37,6 +37,6 @@ export async function POST(request) {
 
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

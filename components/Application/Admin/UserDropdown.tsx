@@ -17,27 +17,27 @@ import LogoutButton from "./LogoutButton";
 import { ADMIN_ORDER_SHOW, ADMIN_PRODUCT_ADD } from "@/routes/AdminPanelRoute";
 
 const UserDropdown = () => {
-    const auth = useSelector((store) => store.authStore.auth)
+    const auth = useSelector((store: any) => store.authStore.auth)
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Avatar>
-                    <AvatarImage src={adminLogo.src} />
+                <Avatar className="">
+                    <AvatarImage className="" src={adminLogo.src} />
                 </Avatar>
 
             </DropdownMenuTrigger>
             <DropdownMenuContent className="me-5 w-44">
-                <DropdownMenuLabel>
+                <DropdownMenuLabel className="" inset={false}>
                     <p className="font-semibold">{auth?.name}</p>
                 </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
+                <DropdownMenuSeparator className="" />
+                <DropdownMenuItem asChild className="" inset={false}>
                     <Link href={ADMIN_PRODUCT_ADD} className="cursor-pointer">
                         <IoShirtOutline />
                         New Product
                     </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
+                <DropdownMenuItem asChild className="" inset={false}>
                     <Link href={ADMIN_ORDER_SHOW} className="cursor-pointer">
                         <MdOutlineShoppingBag />
                         Orders

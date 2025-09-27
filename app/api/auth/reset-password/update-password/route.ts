@@ -18,7 +18,7 @@ export async function PUT(request) {
 
         const { email, password } = validatedData.data
 
-        const getUser = await UserModel.findOne({ deletedAt: null, email }).select("+password")
+        const getUser = await (UserModel as any).findOne({ deletedAt: null, email }).select("+password")
 
         if (!getUser) {
             return response(false, 404, 'User not found.')
@@ -29,6 +29,6 @@ export async function PUT(request) {
 
         return response(true, 200, 'Password update success.')
     } catch (error) {
-        catchError(error)
+        return catchError(error, 'Update password failed')
     }
 }

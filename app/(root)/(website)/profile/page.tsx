@@ -22,8 +22,8 @@ const Profile = () => {
     const dispatch = useDispatch()
     const { data: user } = useFetch('/api/profile/get')
     const [loading, setLoading] = useState(false)
-    const [preview, setPreview] = useState()
-    const [file, setFile] = useState()
+    const [preview, setPreview] = useState<string | undefined>()
+    const [file, setFile] = useState<File | undefined>()
     const formSchema = zSchema.pick({
         name: true, phone: true, address: true
     })
@@ -99,7 +99,7 @@ const Profile = () => {
                                             <div {...getRootProps()}>
                                                 <input {...getInputProps()} />
                                                 <Avatar className="w-28 h-28 relative group border border-gray-100">
-                                                    <AvatarImage src={preview ? preview : userIcon.src} />
+                                                    <AvatarImage className="" src={preview ? preview : userIcon.src} />
                                                     <div className='absolute z-50 w-full h-full top-1/2
                                                      left-1/2 -translate-x-1/2 -translate-y-1/2
                                                       justify-center items-center border-2 border-orange-500 rounded-full group-hover:flex hidden cursor-pointer bg-black/20'>
@@ -149,7 +149,7 @@ const Profile = () => {
                                             <FormItem>
                                                 <FormLabel>Address</FormLabel>
                                                 <FormControl>
-                                                    <Textarea placeholder="Enter your address" {...field} />
+                                                    <Textarea className="" placeholder="Enter your address" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>

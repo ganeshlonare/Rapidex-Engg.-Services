@@ -28,6 +28,6 @@ export async function POST(request) {
             }
         }
 
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

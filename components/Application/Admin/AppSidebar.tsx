@@ -35,12 +35,12 @@ const AppSidebar = () => {
             </SidebarHeader>
 
             <SidebarContent className="p-3">
-                <SidebarMenu>
+                <SidebarMenu className="">
                     {adminAppSidebarMenu.map((menu, index) => (
                         <Collapsible key={index} className="group/collapsible">
-                            <SidebarMenuItem>
+                            <SidebarMenuItem className="">
                                 <CollapsibleTrigger asChild>
-                                    <SidebarMenuButton asChild className="font-semibold px-2 py-5">
+                                    <SidebarMenuButton asChild className="font-semibold px-2 py-5" tooltip="">
                                         <Link href={menu?.url}>
                                             <menu.icon />
                                             {menu.title}
@@ -54,10 +54,10 @@ const AppSidebar = () => {
 
                                 {menu.submenu && menu.submenu.length > 0
                                     &&
-                                    <CollapsibleContent>
-                                        <SidebarMenuSub>
+                                    <CollapsibleContent className="">
+                                        <SidebarMenuSub className="">
                                             {menu.submenu.map((submenuItem, subMenuIndex) => (
-                                                <SidebarMenuSubItem key={subMenuIndex}>
+                                                <SidebarMenuSubItem key={subMenuIndex} className="">
                                                     <SidebarMenuSubButton asChild className="px-2 py-5">
                                                         <Link href={submenuItem.url}>
                                                             {submenuItem.title}

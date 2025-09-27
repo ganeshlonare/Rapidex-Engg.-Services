@@ -24,7 +24,7 @@ const Cart = () => {
     const [discount, setDiscount] = useState(0)
 
 
-    const cart = useSelector(store => store.cartStore)
+    const cart = useSelector((store: any) => store.cartStore)
     const dispatch = useDispatch()
 
 
@@ -53,7 +53,7 @@ const Cart = () => {
             <SheetContent className="sm:max-w-[450px] w-full">
                 <SheetHeader className='py-2'>
                     <SheetTitle className="text-2xl">My Cart</SheetTitle>
-                    <SheetDescription></SheetDescription>
+                    <SheetDescription className=""></SheetDescription>
                 </SheetHeader>
 
                 <div className="h-[calc(100vh-40px)] pb-10 ">

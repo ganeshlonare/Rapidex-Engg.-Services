@@ -9,7 +9,7 @@ export async function POST(request) {
 
         const verifiedCartData = await Promise.all(
             payload.map(async (cartItem) => {
-                const variant = await ProductVariantModel.findById(cartItem.variantId).populate('product').populate('media', 'secure_url').lean()
+                const variant = await (ProductVariantModel as any).findById(cartItem.variantId).populate('product').populate('media', 'secure_url').lean()
                 if (variant) {
                     return {
                         productId: variant.product._id,
@@ -31,6 +31,6 @@ export async function POST(request) {
         return response(true, 200, 'Verified Cart Data.', verifiedCartData)
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Cart verification failed')
     }
 }

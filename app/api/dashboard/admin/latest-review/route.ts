@@ -13,7 +13,7 @@ export async function GET() {
         }
         await connectDB()
 
-        const latestReview = await ReviewModel.find({ deletedAt: null })
+        const latestReview = await (ReviewModel as any).find({ deletedAt: null })
             .sort({ createdAt: -1 })
             .limit(10)
             .populate({
@@ -27,7 +27,7 @@ export async function GET() {
 
         return response(true, 200, 'Latest review', latestReview)
 
-    } catch {
-        return catchError(error)
+    } catch (error) {
+        return catchError(error, 'Operation failed')
     }
 }

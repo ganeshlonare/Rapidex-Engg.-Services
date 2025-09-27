@@ -34,7 +34,7 @@ export async function POST(request) {
 
         const productData = validate.data
 
-        const newProduct = new ProductModel({
+        const newProduct = new (ProductModel as any)({
             name: productData.name,
             slug: productData.slug,
             category: productData.category,
@@ -50,6 +50,6 @@ export async function POST(request) {
         return response(true, 200, 'Product added successfully.')
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

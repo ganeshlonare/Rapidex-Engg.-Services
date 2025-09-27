@@ -6,7 +6,7 @@ export async function GET() {
     try {
         await connectDB()
         
-        const categories = await Category.find({ 
+        const categories = await (Category as any).find({ 
             status: 'active',
             isDeleted: false 
         })

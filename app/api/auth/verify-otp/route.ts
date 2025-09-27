@@ -21,12 +21,12 @@ export async function POST(request) {
 
         const { email, otp } = validatedData.data
 
-        const getOtpData = await OTPModel.findOne({ email, otp })
+        const getOtpData = await (OTPModel as any).findOne({ email, otp })
         if (!getOtpData) {
             return response(false, 404, 'Invalid or expired otp.')
         }
 
-        const getUser = await UserModel.findOne({ deletedAt: null, email }).lean()
+        const getUser = await (UserModel as any).findOne({ deletedAt: null, email }).lean()
         if (!getUser) {
             return response(false, 404, 'User not found.')
         }
@@ -65,6 +65,6 @@ export async function POST(request) {
         return response(true, 200, 'Login successfull.', loggedInUserData)
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'OTP verification failed')
     }
 }

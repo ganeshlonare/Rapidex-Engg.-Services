@@ -33,9 +33,9 @@ const Sorting = ({ limit, setLimit, sorting, setSorting, mobileFilterOpen, setMo
                 <SelectTrigger className="md:w-[180px] w-full bg-white">
                     <SelectValue placeholder="Default Sorting" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="">
                     {sortings.map(option => (
-                        <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                        <SelectItem className="" key={option.value} value={option.value}>{option.label}</SelectItem>
                     ))}
                 </SelectContent>
             </Select>

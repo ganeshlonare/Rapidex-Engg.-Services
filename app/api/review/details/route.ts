@@ -43,6 +43,6 @@ export async function GET(request) {
         return response(true, 200, 'Review details.', { totalReview, averageRating, rating, percentage })
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

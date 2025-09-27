@@ -32,7 +32,7 @@ export async function PUT(request) {
         }
 
 
-        const getMedia = await MediaModel.findById(_id)
+        const getMedia = await (MediaModel as any).findById(_id)
         if (!getMedia) {
             return response(false, 404, 'Media not found.')
         }
@@ -46,6 +46,6 @@ export async function PUT(request) {
         return response(true, 200, 'Media updated successfully.')
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

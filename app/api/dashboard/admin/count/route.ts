@@ -28,6 +28,6 @@ export async function GET() {
         })
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

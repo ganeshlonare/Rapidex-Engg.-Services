@@ -36,10 +36,10 @@ const SearchModel = ({ open, setOpen }) => {
     return (
         <Dialog open={open} onOpenChange={() => setOpen(!open)}>
 
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Quick Search</DialogTitle>
-                    <DialogDescription>
+            <DialogContent className="">
+                <DialogHeader className="">
+                    <DialogTitle className="">Quick Search</DialogTitle>
+                    <DialogDescription className="">
                         Find and navigate to any admin section instantly. Type a keyword to get started.
                     </DialogDescription>
                 </DialogHeader>

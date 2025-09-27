@@ -45,23 +45,23 @@ const Media = ({ media, handleDelete, deleteType, selectedMedia, setSelectedMedi
                             <BsThreeDotsVertical color='#fff' />
                         </span>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start">
+                    <DropdownMenuContent align="start" className="">
                         {deleteType === 'SD' &&
                             <>
-                                <DropdownMenuItem asChild className="cursor-pointer">
+                                <DropdownMenuItem asChild className="cursor-pointer" inset={false}>
                                     <Link href={ADMIN_MEDIA_EDIT(media._id)}>
                                         <MdOutlineEdit />
                                         Edit
                                     </Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem className="cursor-pointer" onClick={() => handleCopyLink(media.secure_url)}>
+                                <DropdownMenuItem className="cursor-pointer" inset={false} onClick={() => handleCopyLink(media.secure_url)}>
                                     <IoIosLink />
                                     Copy Link
                                 </DropdownMenuItem>
                             </>
                         }
 
-                        <DropdownMenuItem className="cursor-pointer" onClick={() => handleDelete([media._id], deleteType)}>
+                        <DropdownMenuItem className="cursor-pointer" inset={false} onClick={() => handleDelete([media._id], deleteType)}>
                             <LuTrash color='red' />
                             {deleteType === 'SD' ? 'Move Into Trash' : 'Delete Permanently'}
                         </DropdownMenuItem>

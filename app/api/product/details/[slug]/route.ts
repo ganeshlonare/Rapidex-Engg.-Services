@@ -23,13 +23,13 @@ export async function GET(request, { params }) {
             return response(false, 404, 'Product not found.')
         }
 
-        const filter = {
+        const filter: any = {
             deletedAt: null,
             slug: slug
         }
 
         // get product with media populated
-        const getProduct = await ProductModel.findOne(filter)
+        const getProduct = await (ProductModel as any).findOne(filter)
             .populate({ path: 'media', select: 'secure_url alt title' })
             .lean()
 

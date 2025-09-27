@@ -28,7 +28,7 @@ export async function POST(request) {
         const { email, password } = validatedData.data
 
         // get user data 
-        const getUser = await UserModel.findOne({ deletedAt: null, email }).select("+password")
+        const getUser = await (UserModel as any).findOne({ deletedAt: null, email }).select("+password")
         if (!getUser) {
             return response(false, 400, 'Invalid login credentials.')
         }
@@ -57,11 +57,11 @@ export async function POST(request) {
 
 
         // otp generation 
-        await OTPModel.deleteMany({ email })  // deleting old otps 
+        await (OTPModel as any).deleteMany({ email })  // deleting old otps 
 
-        let OTP = 123456
+        let OTP: number = 123456
         if (email !== 'admin@gmail.com') {
-            OTP = generateOTP()
+            OTP = Number(generateOTP())
 
             const OTPEmailTemplate = otpEmail(OTP)
 
@@ -74,7 +74,7 @@ export async function POST(request) {
 
         // storing otp into database 
 
-        const newOtpData = new OTPModel({
+        const newOtpData = new (OTPModel as any)({
             email, otp: OTP
         })
 
@@ -82,6 +82,6 @@ export async function POST(request) {
 
         return response(true, 200, 'Please verify your device.')
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Login failed')
     }
 }

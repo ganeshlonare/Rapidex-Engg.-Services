@@ -16,7 +16,7 @@ export async function GET(request, { params }) {
         const getParams = await params
         const id = getParams.id
 
-        const filter = {
+        const filter: any = {
             deletedAt: null
         }
 
@@ -24,9 +24,9 @@ export async function GET(request, { params }) {
             return response(false, 400, 'Invalid object id.')
         }
 
-        filter._id = id
+        (filter as any)._id = id
 
-        const getCoupon = await CouponModel.findOne(filter).lean()
+        const getCoupon = await (CouponModel as any).findOne(filter).lean()
 
         if (!getCoupon) {
             return response(false, 404, 'Coupon not found.')
@@ -35,6 +35,6 @@ export async function GET(request, { params }) {
         return response(true, 200, 'Coupon found.', getCoupon)
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

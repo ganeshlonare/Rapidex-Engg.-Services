@@ -18,7 +18,7 @@ export async function PUT(request) {
             return response(false, 400, 'Order id and status are required.')
         }
 
-        const orderData = await OrderModel.findById(_id)
+        const orderData = await (OrderModel as any).findById(_id)
 
         if (!orderData) {
             return response(false, 404, 'Order not found.')
@@ -30,6 +30,6 @@ export async function PUT(request) {
         return response(true, 200, 'Order status updated successfully.', orderData)
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

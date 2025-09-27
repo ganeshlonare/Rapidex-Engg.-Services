@@ -37,12 +37,14 @@ const AddCategory = () => {
     },
   })
 
+  const watchedName = form.watch('name')
+
   useEffect(() => {
     const name = form.getValues('name')
     if (name) {
       form.setValue('slug', slugify(name).toLowerCase())
     }
-  }, [form.watch('name')])
+  }, [watchedName, form])
 
   const onSubmit = async (values) => {
     setLoading(true)

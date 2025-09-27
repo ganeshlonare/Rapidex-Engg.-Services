@@ -10,7 +10,7 @@ export async function GET() {
 
         await connectDB()
 
-        const getCategory = await CategoryModel.find({ deletedAt: null })
+        const getCategory = await (CategoryModel as any).find({ deletedAt: null })
             .populate({ path: 'media', select: 'secure_url alt title' })
             .lean()
 

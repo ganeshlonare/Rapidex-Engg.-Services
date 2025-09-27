@@ -9,7 +9,7 @@ const TopHeader = () => {
   const dropdownRef = useRef(null);
   const timeoutRef = useRef(null);
   const router = useRouter();
-  const auth = useSelector(state => state.authStore?.auth);
+  const auth = useSelector((state: any) => state.authStore?.auth);
 
   // Handle mouse enter and leave for hover effect with delay (desktop only)
   const handleMouseEnter = () => {

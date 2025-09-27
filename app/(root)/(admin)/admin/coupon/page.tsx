@@ -1,11 +1,13 @@
 'use client'
 import BreadCrumb from "@/components/Application/Admin/BreadCrumb"
+
+export const dynamic = 'force-dynamic'
 import DatatableWrapper from "@/components/Application/Admin/DatatableWrapper"
 import DeleteAction from "@/components/Application/Admin/DeleteAction"
 import EditAction from "@/components/Application/Admin/EditAction"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { DT_COUPON_COLUMN, } from "@/lib/column"
+import { DT_COUPON_COLUMN } from "@/lib/column"
 import { columnConfig } from "@/lib/helperFunction"
 import { ADMIN_COUPON_ADD, ADMIN_COUPON_EDIT, ADMIN_COUPON_SHOW, ADMIN_DASHBOARD, ADMIN_TRASH } from "@/routes/AdminPanelRoute"
 import Link from "next/link"

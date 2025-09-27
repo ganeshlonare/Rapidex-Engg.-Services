@@ -20,7 +20,7 @@ export async function PUT(request) {
             return response(false, 400, 'Invalid or empty id list.')
         }
 
-        const data = await ReviewModel.find({ _id: { $in: ids } }).lean()
+        const data = await (ReviewModel as any).find({ _id: { $in: ids } }).lean()
         if (!data.length) {
             return response(false, 404, 'Data not found.')
         }
@@ -30,16 +30,16 @@ export async function PUT(request) {
         }
 
         if (deleteType === 'SD') {
-            await ReviewModel.updateMany({ _id: { $in: ids } }, { $set: { deletedAt: new Date().toISOString() } });
+            await (ReviewModel as any).updateMany({ _id: { $in: ids } }, { $set: { deletedAt: new Date().toISOString() } });
         } else {
-            await ReviewModel.updateMany({ _id: { $in: ids } }, { $set: { deletedAt: null } });
+            await (ReviewModel as any).updateMany({ _id: { $in: ids } }, { $set: { deletedAt: null } });
         }
 
 
         return response(true, 200, deleteType === 'SD' ? 'Data moved into trash.' : "Data restored.")
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }
 
@@ -62,19 +62,19 @@ export async function DELETE(request) {
             return response(false, 400, 'Invalid or empty id list.')
         }
 
-        const data = await ReviewModel.find({ _id: { $in: ids } }).lean()
+        const data = await (ReviewModel as any).find({ _id: { $in: ids } }).lean()
         if (!data.length) {
             return response(false, 404, 'Data not found.')
         }
 
-        if (!deleteType === 'PD') {
+        if (deleteType !== 'PD') {
             return response(false, 400, 'Invalid delet operation. Delete type should be PD for this route.')
         }
 
-        await ReviewModel.deleteMany({ _id: { $in: ids } })
+        await (ReviewModel as any).deleteMany({ _id: { $in: ids } })
 
         return response(true, 200, 'Data deleted permanently')
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

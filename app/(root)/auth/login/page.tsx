@@ -36,11 +36,11 @@ const LoginPage = () => {
     const [loading, setLoading] = useState(false)
     const [otpVerificationLoading, setOtpVerificationLoading] = useState(false)
     const [isTypePassword, setIsTypePassword] = useState(true)
-    const [otpEmail, setOtpEmail] = useState()
+    const [otpEmail, setOtpEmail] = useState<string | undefined>()
     const formSchema = zSchema.pick({
         email: true
     }).extend({
-        password: z.string().min('3', 'Password field is required.')
+        password: z.string().min(3, 'Password field is required.')
     })
 
     const form = useForm({
@@ -98,7 +98,7 @@ const LoginPage = () => {
 
     return (
         <Card className="w-[400px]">
-            <CardContent>
+            <CardContent className="">
                 <button onClick={() => router.back()} className='flex items-center gap-1 text-sm text-gray-600 hover:text-orange-500'>
                     <ArrowLeft size={16} />
                     Back

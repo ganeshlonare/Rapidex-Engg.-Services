@@ -44,7 +44,7 @@ const chartConfig = {
 
 export function OrderStatus() {
     const [chartData, setChartData] = useState([])
-    const [statusCount, setStatusCount] = useState()
+    const [statusCount, setStatusCount] = useState<any>({})
     const [totalCount, setTotalCount] = useState(0)
     const { data: orderStatus, loading } = useFetch('/api/dashboard/admin/order-status')
 
@@ -73,6 +73,7 @@ export function OrderStatus() {
     return (
         <div>
             <ChartContainer
+                id="order-status"
                 config={chartConfig}
                 className="mx-auto aspect-square max-h-[250px]"
             >

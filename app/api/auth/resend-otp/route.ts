@@ -19,16 +19,16 @@ export async function POST(request) {
 
         const { email } = validatedData.data
 
-        const getUser = await UserModel.findOne({ email })
+        const getUser = await (UserModel as any).findOne({ email })
         if (!getUser) {
             return response(false, 404, 'User not found.')
         }
 
 
         // remove old otps 
-        await OTPModel.deleteMany({ email })
+        await (OTPModel as any).deleteMany({ email })
         const otp = generateOTP()
-        const newOtpData = new OTPModel({
+        const newOtpData = new (OTPModel as any)({
             email, otp
         })
 
@@ -42,6 +42,6 @@ export async function POST(request) {
         return response(true, 200, 'OTP sent successfully.')
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Resend OTP failed')
     }
 }

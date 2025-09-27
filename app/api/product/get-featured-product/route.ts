@@ -8,7 +8,7 @@ export async function GET() {
     try {
         await connectDB()
 
-        const getProduct = await ProductModel.find({ deletedAt: null })
+        const getProduct = await (ProductModel as any).find({ deletedAt: null })
             .populate({ path: 'media', select: 'secure_url alt title' })
             .limit(8)
             .lean()

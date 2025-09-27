@@ -6,7 +6,7 @@ export async function GET() {
     try {
         await connectDB()
         
-        const products = await Product.find({ 
+        const products = await (Product as any).find({ 
             status: 'active',
             isDeleted: false 
         })

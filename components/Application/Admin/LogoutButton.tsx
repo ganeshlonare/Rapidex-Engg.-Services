@@ -18,7 +18,7 @@ const LogoutButton = () => {
                 throw new Error(logoutResponse.message)
             }
 
-            dispatch(logout())
+            dispatch(logout({}))
             showToast('success', logoutResponse.message)
             router.push(WEBSITE_LOGIN)
         } catch (error) {
@@ -27,7 +27,7 @@ const LogoutButton = () => {
     }
 
     return (
-        <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+        <DropdownMenuItem onClick={handleLogout} className="cursor-pointer" inset={false}>
             <AiOutlineLogout color='red' />
             Logout
         </DropdownMenuItem>

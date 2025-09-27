@@ -29,7 +29,7 @@ export async function POST(request) {
 
         const { product, userId, rating, title, review } = validate.data
 
-        const newReview = new ReviewModel({
+        const newReview = new (ReviewModel as any)({
             product: product,
             user: userId,
             rating: rating,
@@ -42,6 +42,6 @@ export async function POST(request) {
         return response(true, 200, 'Your review submitted successfully.')
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

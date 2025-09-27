@@ -53,7 +53,7 @@ function Select({
    };
 
    return (
-       <Popover open={open} onOpenChange={setOpen}>
+       <Popover open={open} onOpenChange={setOpen} className="">
            <PopoverTrigger className="w-full" asChild>
                <Button
                    variant="outline"
@@ -68,9 +68,9 @@ function Select({
                            selected.map((value) => {
                                const option = options.find((o) => o.value === value);
                                return (
-                                   <Badge key={value} className="me-2">
+                                   <Badge key={value} className="me-2" variant="default">
                                        {option.label}
-                                       <span onClick={(e) => { e.stopPropagation(e); handleRemove(value) }} >
+                                       <span onClick={(e) => { e.stopPropagation(); handleRemove(value) }} >
                                            <XIcon className="ml-2 h-4 w-4 cursor-pointer" />
                                        </span>
                                    </Badge>
@@ -93,13 +93,14 @@ function Select({
                </Button>
            </PopoverTrigger>
            <PopoverContent align="start" className="p-0">
-               <Command>
-                   <CommandList>
-                       <CommandInput placeholder="Search options..." />
-                       <CommandEmpty>No options found.</CommandEmpty>
-                       <CommandGroup>
+               <Command className="">
+                   <CommandList className="">
+                       <CommandInput className="" placeholder="Search options..." />
+                       <CommandEmpty className="">No options found.</CommandEmpty>
+                       <CommandGroup className="">
                            {options.map((option) => (
                                <CommandItem
+                                   className=""
                                    key={option.value}
                                    value={option.label}
                                    onSelect={() => handleSelect(option)}

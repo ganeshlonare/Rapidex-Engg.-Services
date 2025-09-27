@@ -23,9 +23,9 @@ const breadcrumbData = [
   { href: '', label: 'Edit Product' },
 ]
 
-const EditProduct = ({ params }) => {
+const EditProduct = async ({ params }: { params: Promise<{ id: string }> }) => {
 
-  const { id } = use(params)
+  const { id } = await params
 
   const [loading, setLoading] = useState(false)
   const [categoryOption, setCategoryOption] = useState([])
@@ -103,8 +103,8 @@ const EditProduct = ({ params }) => {
 
   // discount percentage calculation 
   useEffect(() => {
-    const mrp = form.getValues('mrp') || 0
-    const sellingPrice = form.getValues('sellingPrice') || 0
+    const mrp = Number(form.getValues('mrp')) || 0
+    const sellingPrice = Number(form.getValues('sellingPrice')) || 0
 
     if (mrp > 0 && sellingPrice > 0) {
       const discountPercentage = ((mrp - sellingPrice) / mrp) * 100
@@ -118,7 +118,7 @@ const EditProduct = ({ params }) => {
     form.setValue('description', data)
   }
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: any) => {
     setLoading(true)
     try {
       if (selectedMedia.length <= 0) {

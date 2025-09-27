@@ -63,17 +63,17 @@ const MediaPage = () => {
         },
     })
 
-
     const deleteMutation = useDeleteMutation('media-data', '/api/media/delete')
 
-    const handleDelete = (ids, deleteType) => {
+
+    const handleDelete = (ids: any, deleteType: any) => {
         let c = true
         if (deleteType === 'PD') {
             c = confirm('Are you sure you want to delete the data permanently?')
         }
 
         if (c) {
-            deleteMutation.mutate({ ids, deleteType })
+            (deleteMutation as any).mutate({ ids, deleteType })
         }
 
         setSelectAll(false)
@@ -84,7 +84,6 @@ const MediaPage = () => {
     const handleSelectAll = () => {
         setSelectAll(!selectAll)
     }
-
     useEffect(() => {
         if (selectAll) {
             const ids = data.pages.flatMap(page => page.mediaData.map(media => media._id));
@@ -92,7 +91,7 @@ const MediaPage = () => {
         } else {
             setSelectedMedia([])
         }
-    }, [selectAll])
+    }, [selectAll, data])
 
 
 
@@ -133,7 +132,7 @@ const MediaPage = () => {
                     {selectedMedia.length > 0
                         &&
                         <div className='py-2 px-3 bg-violet-200 mb-2 rounded flex justify-between items-center'>
-                            <Label>
+                            <Label className="flex items-center gap-2">
                                 <Checkbox
                                     checked={selectAll}
                                     onCheckedChange={handleSelectAll}

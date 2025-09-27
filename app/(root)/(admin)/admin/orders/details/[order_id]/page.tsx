@@ -23,10 +23,10 @@ const statusOptions = [
     { label: 'Unverified', value: 'unverified' },
 ]
 
-const OrderDetails = ({ params }) => {
-    const { order_id } = use(params)
-    const [orderData, setOrderData] = useState()
-    const [orderStatus, setOrderStatus] = useState()
+const OrderDetails = (props: any) => {
+    const { order_id } = props.params || {}
+    const [orderData, setOrderData] = useState<any>()
+    const [orderStatus, setOrderStatus] = useState<any>()
     const [updatingStatus, setUpdatingStatus] = useState(false)
     const { data, loading } = useFetch(`/api/orders/get/${order_id}`)
 

@@ -17,7 +17,7 @@ export async function GET() {
         const userId = auth.userId
 
 
-        const orders = await OrderModel.find({ user: userId }).populate('products.productId', 'name slug').populate({
+        const orders = await (OrderModel as any).find({ user: userId }).populate('products.productId', 'name slug').populate({
             path: 'products.variantId',
             populate: { path: 'media' }
         }).lean()
@@ -26,6 +26,6 @@ export async function GET() {
         return response(true, 200, 'Order info.', orders)
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

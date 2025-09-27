@@ -61,7 +61,6 @@ export const zSchema = z.object({
         z.string().transform((val) => Number(val)).refine((val) => !isNaN(val) && val >= 0, 'Please enter a valid number.')
     ]),
     review: z.string().min(3, 'Review is required.'),
-    code: z.string().min(3, 'Coupon code is required.'),
     phone: z.string().min(10, 'Phone number is required.'),
     country: z.string().min(3, 'Country is required.'),
     state: z.string().min(3, 'State is required.'),

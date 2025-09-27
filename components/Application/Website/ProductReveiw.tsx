@@ -14,20 +14,19 @@ import { Rating } from '@mui/material'
 import { Textarea } from '@/components/ui/textarea'
 import axios from 'axios'
 import Link from 'next/link'
-import { WEBSITE_LOGIN } from '@/routes/WebsiteRoute'
 import { showToast } from '@/lib/showToast'
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
 import ReviewList from './ReviewList'
 import useFetch from '@/hooks/useFetch'
+import { WEBSITE_LOGIN } from '@/routes/WebsiteRoute'
 
-const ProductReveiw = ({ productId }) => {
+const ProductReveiw = ({ productId }: { productId: string }) => {
     const queryClient = useQueryClient()
-    const auth = useSelector(store => store.authStore.auth)
+    const auth = useSelector((store: any) => store.authStore.auth)
     const [loading, setLoading] = useState(false)
     const [currentUrl, setCurrentUrl] = useState('')
     const [isReview, setIsReview] = useState(false)
-    const [reviewCount, setReviewCount] = useState()
-
+    const [reviewCount, setReviewCount] = useState<any>({})
     const { data: reviewDetails } = useFetch(`/api/review/details?productId=${productId}`)
 
     useEffect(() => {
@@ -67,7 +66,7 @@ const ProductReveiw = ({ productId }) => {
         form.setValue('userId', auth?._id)
     }, [auth])
 
-    const handleReviewSubmit = async (values) => {
+    const handleReviewSubmit = async (values: any) => {
         setLoading(true)
         try {
             const { data: response } = await axios.post('/api/review/create', values)
@@ -77,7 +76,7 @@ const ProductReveiw = ({ productId }) => {
 
             form.reset()
             showToast('success', response.message)
-            queryClient.invalidateQueries(['product-review'])
+            queryClient.invalidateQueries({ queryKey: ['product-review'] })
         } catch (error) {
             showToast('error', error.message)
         } finally {
@@ -139,7 +138,7 @@ const ProductReveiw = ({ productId }) => {
                                             <p className='w-3'>{rating}</p>
                                             <IoStar />
                                         </div>
-                                        <Progress value={reviewCount?.percentage[rating]} />
+                                        <Progress className="" value={reviewCount?.percentage[rating]} />
                                         <span className='text-sm'>{reviewCount?.rating[rating]}</span>
                                     </div>
                                 ))}
@@ -186,9 +185,9 @@ const ProductReveiw = ({ productId }) => {
                                                     <FormItem>
                                                         <FormControl>
                                                             <Rating
-                                                                value={field.value}
-                                                                size="large"
                                                                 {...field}
+                                                                value={Number(field.value)}
+                                                                size="large"
                                                             />
                                                         </FormControl>
                                                         <FormMessage />
@@ -219,7 +218,7 @@ const ProductReveiw = ({ productId }) => {
                                                     <FormItem>
                                                         <FormLabel>Review</FormLabel>
                                                         <FormControl>
-                                                            <Textarea placeholder="Write your comment here..." {...field} />
+                                                            <Textarea className="" placeholder="Write your comment here..." {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -255,13 +254,12 @@ const ProductReveiw = ({ productId }) => {
                         ))}
 
                         {hasNextPage &&
-                            <ButtonLoading text="Load More" type="button" loading={isFetching} onClick={fetchNextPage} />
+                            <ButtonLoading text="Load More" type="button" loading={isFetching} onClick={() => fetchNextPage()} />
                         }
 
                     </div>
 
                 </div>
-
 
 
             </div>

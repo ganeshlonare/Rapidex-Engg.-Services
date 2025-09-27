@@ -57,8 +57,8 @@ const Filter = () => {
 
 
     const handlePriceFilter = () => {
-        urlSearchParams.set('minPrice', priceFilter.minPrice)
-        urlSearchParams.set('maxPrice', priceFilter.maxPrice)
+        urlSearchParams.set('minPrice', priceFilter.minPrice.toString())
+        urlSearchParams.set('maxPrice', priceFilter.maxPrice.toString())
         router.push(`${WEBSITE_SHOP}?${urlSearchParams}`)
     }
 
@@ -73,15 +73,16 @@ const Filter = () => {
                 </Button>
             }
             <Accordion type="multiple" defaultValue={['1', '4']}>
-                <AccordionItem value="1">
+                <AccordionItem className="" value="1">
                     <AccordionTrigger className="uppercase font-semibold hover:no-underline">Category</AccordionTrigger>
-                    <AccordionContent>
+                    <AccordionContent className="">
                         <div className='max-h-48 overflow-auto'>
                             <ul>
                                 {categoryData && categoryData.success && categoryData.data.map((category) => (
                                     <li key={category._id} className='mb-3'>
                                         <label className="flex items-center space-x-3 cursor-pointer">
                                             <Checkbox
+                                                className="rounded-full"
                                                 onCheckedChange={() => handleCategoryFilter(category.slug)}
                                                 checked={selectedCategory.includes(category.slug)}
                                             />
@@ -93,10 +94,10 @@ const Filter = () => {
                         </div>
                     </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="4">
+                <AccordionItem className="" value="4">
                     <AccordionTrigger className="uppercase font-semibold hover:no-underline">Price</AccordionTrigger>
-                    <AccordionContent>
-                        <Slider defaultValue={[0, 3000]} max={3000} step={1} onValueChange={handlePriceChange} />
+                    <AccordionContent className="">
+                        <Slider className="" value={[priceFilter.minPrice, priceFilter.maxPrice]} defaultValue={[0, 3000]} max={3000} step={1} onValueChange={handlePriceChange} />
                         <div className='flex justify-between items-center pt-2'>
                             <span>{priceFilter.minPrice.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</span>
                             <span>{priceFilter.maxPrice.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</span>

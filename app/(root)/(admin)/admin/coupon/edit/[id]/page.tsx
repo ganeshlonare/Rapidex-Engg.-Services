@@ -8,7 +8,7 @@ import ButtonLoading from '@/components/Application/ButtonLoading'
 import { zSchema } from '@/lib/zodSchema'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { use, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { showToast } from '@/lib/showToast'
 import axios from 'axios'
@@ -21,9 +21,9 @@ const breadcrumbData = [
   { href: '', label: 'Edit Coupon' },
 ]
 
-const EditCoupon = ({ params }) => {
-  const { id } = use(params)
+const EditCoupon = (props: any) => {
   const [loading, setLoading] = useState(false)
+  const { id } = props.params || {}
   const { data: getCouponData } = useFetch(`/api/coupon/get/${id}`)
 
   const formSchema = zSchema.pick({
@@ -34,14 +34,14 @@ const EditCoupon = ({ params }) => {
     validity: true,
   })
 
-  const form = useForm({
+  const form = useForm<any>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       _id: id,
       code: "",
       discountPercentage: "",
       minShoppingAmount: "",
-      validity: 0,
+      validity: "",
     },
   })
 
@@ -50,19 +50,17 @@ const EditCoupon = ({ params }) => {
       const coupon = getCouponData.data
       form.reset({
         _id: coupon._id,
-        code: coupon.code,
         discountPercentage: coupon.discountPercentage,
         minShoppingAmount: coupon.minShoppingAmount,
         validity: dayjs(coupon.validity).format('YYYY-MM-DD'),
       })
     }
-  }, [getCouponData])
+  }, [getCouponData, form])
 
 
   const onSubmit = async (values) => {
     setLoading(true)
     try {
-
       const { data: response } = await axios.put('/api/coupon/update', values)
       if (!response.success) {
         throw new Error(response.message)
@@ -145,7 +143,11 @@ const EditCoupon = ({ params }) => {
                       <FormItem>
                         <FormLabel>Validity <span className='text-red-500'>*</span></FormLabel>
                         <FormControl>
-                          <Input type="date"   {...field} />
+                          <Input
+                            type="date"
+                            value={field.value ? dayjs(field.value as any).format('YYYY-MM-DD') : ''}
+                            onChange={(e) => field.onChange(e.target.value)}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -155,7 +157,6 @@ const EditCoupon = ({ params }) => {
 
 
               </div>
-
 
 
               <div className='mb-3 mt-5'>

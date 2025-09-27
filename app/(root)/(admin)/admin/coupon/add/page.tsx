@@ -17,6 +17,7 @@ import Select from '@/components/Application/Select'
 import Editor from '@/components/Application/Admin/Editor'
 import MediaModal from '@/components/Application/Admin/MediaModal'
 import Image from 'next/image'
+import dayjs from 'dayjs'
 const breadcrumbData = [
   { href: ADMIN_DASHBOARD, label: 'Home' },
   { href: ADMIN_COUPON_SHOW, label: 'Coupons' },
@@ -41,20 +42,17 @@ const AddCoupon = () => {
       code: "",
       discountPercentage: "",
       minShoppingAmount: "",
-      validity: 0,
+      validity: new Date(),
     },
   })
-
 
   const onSubmit = async (values) => {
     setLoading(true)
     try {
-
       const { data: response } = await axios.post('/api/coupon/create', values)
       if (!response.success) {
         throw new Error(response.message)
       }
-
       form.reset()
       showToast('success', response.message)
     } catch (error) {
@@ -133,7 +131,11 @@ const AddCoupon = () => {
                       <FormItem>
                         <FormLabel>Validity <span className='text-red-500'>*</span></FormLabel>
                         <FormControl>
-                          <Input type="date"   {...field} />
+                          <Input
+                            type="date"
+                            value={field.value ? dayjs(field.value as Date).format('YYYY-MM-DD') : ''}
+                            onChange={(e) => field.onChange(new Date(e.target.value))}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

@@ -10,7 +10,9 @@ const nextConfig: NextConfig = {
                 pathname: '/**',
                 search: ''
             }
-        ]
+        ],
+        // Avoid optimizer network timeouts in dev by serving images directly
+        unoptimized: process.env.NODE_ENV !== 'production',
     },
     // Enable static generation for better SEO
     trailingSlash: false,
@@ -19,8 +21,11 @@ const nextConfig: NextConfig = {
     // Disable TypeScript checking during build for now
     typescript: {
         ignoreBuildErrors: true,
+        tsconfigPath: './tsconfig.build.json',
     },
-    // Disable ESLint during build for now
+    // Disable SWC minification which includes type checking
+    swcMinify: false,
+    // Disable ESLint during builds
     eslint: {
         ignoreDuringBuilds: true,
     },

@@ -1,21 +1,20 @@
 'use client'
 import { Card, CardContent } from '@/components/ui/card'
 import axios from 'axios'
-import { use, useEffect, useState } from 'react'
-import verifiedImg from "@/public/assets/images/verified.gif"
+import { useEffect, useState } from 'react'
 import verificationFailedImg from "@/public/assets/images/verification-failed.gif"
+import verifiedImg from "@/public/assets/images/verified.gif"
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { WEBSITE_HOME } from '@/routes/WebsiteRoute'
-const EmailVerification = ({ params }) => {
-    const { token } = use(params)
+const EmailVerification = (props: any) => {
+    const { token } = props.params || {}
     const [isVerified, setIsVerified] = useState(false)
     useEffect(() => {
         const verify = async () => {
             const { data: verificationResponse } = await axios.post('/api/auth/verify-email', { token })
             if (verificationResponse.success) {
-                setIsVerified(true)
             }
         }
 
@@ -23,7 +22,7 @@ const EmailVerification = ({ params }) => {
     }, [token])
     return (
         <Card className="w-[400px]">
-            <CardContent>
+            <CardContent className="">
                 {isVerified ?
                     <div >
                         <div className='flex justify-center items-center'>

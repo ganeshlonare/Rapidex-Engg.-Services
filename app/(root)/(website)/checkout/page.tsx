@@ -34,8 +34,8 @@ const breadCrumb = {
 const Checkout = () => {
     const router = useRouter()
     const dispatch = useDispatch()
-    const cart = useSelector(store => store.cartStore)
-    const authStore = useSelector(store => store.authStore)
+    const cart = useSelector((store: any) => store.cartStore)
+    const authStore = useSelector((store: any) => store.authStore)
     const [verifiedCartData, setVerifiedCartData] = useState([])
     const { data: getVerifiedCartData } = useFetch('/api/cart-verification', 'POST', { data: cart.products })
 
@@ -243,7 +243,7 @@ const Checkout = () => {
 
                     if (paymentResponseData.success) {
                         showToast('success', paymentResponseData.message)
-                        dispatch(clearCart())
+                        dispatch(clearCart({}))
                         orderForm.reset()
                         router.push(WEBSITE_ORDER_DETAILS(response.razorpay_order_id))
                         setSavingOrder(false)
@@ -455,7 +455,7 @@ const Checkout = () => {
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormControl>
-                                                        <Textarea placeholder="Enter order note" {...field} />
+                                                        <Textarea className="" placeholder="Enter order note" {...field} />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>

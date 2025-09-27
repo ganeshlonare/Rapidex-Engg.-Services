@@ -73,7 +73,7 @@ const Shop = () => {
                     <Sheet open={isMobileFilter} onOpenChange={() => setIsMobileFilter(false)}>
                         <SheetContent side='left' className="block">
                             <SheetHeader className="border-b">
-                                <SheetTitle>Filter </SheetTitle>
+                                <SheetTitle className="">Filter </SheetTitle>
                             </SheetHeader>
                             <div className='p-4 overflow-auto h-[calc(100vh-80px)]'>
                                 <Filter />
@@ -109,7 +109,7 @@ const Shop = () => {
 
                     <div className='flex justify-center mt-10'>
                         {hasNextPage ?
-                            <ButtonLoading type="button" loading={isFetching} text="Load More" onClick={fetchNextPage} />
+                            <ButtonLoading type="button" loading={isFetching} text="Load More" onClick={() => fetchNextPage()} />
                             :
                             <>
                                 {!isFetching && <span>No more data to load.</span>}

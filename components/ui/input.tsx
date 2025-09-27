@@ -2,11 +2,13 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement>
+
 function Input({
   className,
-  type,
+  type = "text",
   ...props
-}) {
+}: InputProps) {
   return (
     <input
       type={type}

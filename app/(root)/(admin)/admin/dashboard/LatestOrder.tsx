@@ -15,7 +15,8 @@ import notFound from '@/public/assets/images/not-found.png'
 import { useEffect, useState } from "react"
 import { statusBadge } from "@/lib/helperFunction"
 const LatestOrder = () => {
-    const [latestOrder, setLatestOrder] = useState()
+    const [latestOrder, setLatestOrder] = useState<any[]>([])
+
     const { data, loading } = useFetch('/api/dashboard/admin/latest-order')
 
     useEffect(() => {
@@ -31,26 +32,26 @@ const LatestOrder = () => {
     </div>
 
     return (
-        <Table>
+        <Table className="">
 
-            <TableHeader>
-                <TableRow>
-                    <TableHead>Order Id</TableHead>
-                    <TableHead>Payment Id</TableHead>
-                    <TableHead>Total Item</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Amount</TableHead>
+            <TableHeader className="">
+                <TableRow className="">
+                    <TableHead className="">Order Id</TableHead>
+                    <TableHead className="">Payment Id</TableHead>
+                    <TableHead className="">Total Item</TableHead>
+                    <TableHead className="">Status</TableHead>
+                    <TableHead className="">Amount</TableHead>
                 </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className="">
 
                 {latestOrder?.map((order) => (
-                    <TableRow key={order._id}>
-                        <TableCell >{order._id}</TableCell>
-                        <TableCell >{order.payment_id}</TableCell>
-                        <TableCell >{order.products.length}</TableCell>
-                        <TableCell >{statusBadge(order.status)}</TableCell>
-                        <TableCell>{order.totalAmount}</TableCell>
+                    <TableRow className="" key={order._id}>
+                        <TableCell className="">{order._id}</TableCell>
+                        <TableCell className="">{order.payment_id}</TableCell>
+                        <TableCell className="">{order.products.length}</TableCell>
+                        <TableCell className="">{statusBadge(order.status)}</TableCell>
+                        <TableCell className="">{order.totalAmount}</TableCell>
 
                     </TableRow>
                 ))}

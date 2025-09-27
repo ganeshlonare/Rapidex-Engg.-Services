@@ -13,7 +13,7 @@ export async function PUT(request) {
         }
 
         const userId = auth.userId
-        const user = await UserModel.findById(userId)
+        const user = await (UserModel as any).findById(userId)
 
         if (!user) {
             return response(false, 404, 'User not found.')
@@ -56,6 +56,6 @@ export async function PUT(request) {
             avatar: user.avatar
         })
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

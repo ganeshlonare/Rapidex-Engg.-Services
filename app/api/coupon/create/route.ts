@@ -30,7 +30,7 @@ export async function POST(request) {
 
         const couponData = validate.data
 
-        const newCoupon = new CouponModel({
+        const newCoupon = new (CouponModel as any)({
             code: couponData.code,
             discountPercentage: couponData.discountPercentage,
             minShoppingAmount: couponData.minShoppingAmount,
@@ -42,6 +42,6 @@ export async function POST(request) {
         return response(true, 200, 'Coupon added successfully.')
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

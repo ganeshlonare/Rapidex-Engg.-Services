@@ -68,7 +68,7 @@ const RegisterPage = () => {
 
     return (
         <Card className="w-[400px]">
-            <CardContent>
+            <CardContent className="">
                 <button onClick={() => router.back()} className='flex items-center gap-1 text-sm text-gray-600 hover:text-orange-500'>
                     <ArrowLeft size={16} />
                     Back

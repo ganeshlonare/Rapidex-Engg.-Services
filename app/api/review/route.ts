@@ -1,6 +1,6 @@
 import { isAuthenticated } from "@/lib/authentication"
 import { connectDB } from "@/lib/databaseConnection"
-import { catchError } from "@/lib/helperFunction"
+import { catchError, response } from "@/lib/helperFunction"
 import ReviewModel from "@/models/Review.model"
 
 import { NextResponse } from "next/server"
@@ -122,6 +122,6 @@ export async function GET(request) {
         })
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

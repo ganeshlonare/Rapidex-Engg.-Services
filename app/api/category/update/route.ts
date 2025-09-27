@@ -26,7 +26,7 @@ export async function PUT(request) {
         const { _id, name, slug } = validate.data
         const media = payload?.media || null
 
-        const getCategory = await CategoryModel.findOne({ deletedAt: null, _id })
+        const getCategory = await (CategoryModel as any).findOne({ deletedAt: null, _id })
         if (!getCategory) {
             return response(false, 404, 'Data not found.')
         }
@@ -44,6 +44,6 @@ export async function PUT(request) {
         return response(true, 200, 'Category updated successfully.')
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Category update failed')
     }
 }

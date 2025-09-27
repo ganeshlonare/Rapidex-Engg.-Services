@@ -17,7 +17,7 @@ export async function GET(request, { params }) {
         const getParams = await params
         const id = getParams.id
 
-        const filter = {
+        const filter: any = {
             deletedAt: null
         }
 
@@ -25,9 +25,9 @@ export async function GET(request, { params }) {
             return response(false, 400, 'Invalid object id.')
         }
 
-        filter._id = id
+        (filter as any)._id = id
 
-        const getProduct = await ProductModel.findOne(filter).populate('media', '_id secure_url').lean()
+        const getProduct = await (ProductModel as any).findOne(filter).populate('media', '_id secure_url').lean()
 
         if (!getProduct) {
             return response(false, 404, 'Product not found.')
@@ -36,6 +36,6 @@ export async function GET(request, { params }) {
         return response(true, 200, 'Product found.', getProduct)
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

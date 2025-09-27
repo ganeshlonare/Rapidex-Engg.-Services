@@ -12,11 +12,11 @@ export async function GET(request) {
 
         await connectDB()
 
-        const filter = {
+        const filter: any = {
             deletedAt: null
         }
 
-        const getOrder = await OrderModel.find(filter).select("-products").sort({ createdAt: -1 }).lean()
+        const getOrder = await (OrderModel as any).find(filter).select("-products").sort({ createdAt: -1 }).lean()
 
         if (!getOrder) {
             return response(false, 404, 'Collection empty.')
@@ -26,6 +26,6 @@ export async function GET(request) {
 
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

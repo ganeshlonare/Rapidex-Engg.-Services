@@ -21,7 +21,7 @@ export async function POST(request) {
         }
 
         // get user  
-        const user = await UserModel.findById(userId)
+        const user = await (UserModel as any).findById(userId)
         if (!user) {
             return response(false, 404, 'User not found.')
         }
@@ -33,6 +33,6 @@ export async function POST(request) {
         return response(true, 200, 'Email verification success.')
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Email verification failed')
     }
 }

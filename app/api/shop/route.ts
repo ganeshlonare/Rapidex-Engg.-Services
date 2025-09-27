@@ -40,12 +40,12 @@ export async function GET(request) {
         let categoryId = []
         if (categorySlug) {
             const slugs = categorySlug.split(',')
-            const categoryData = await CategoryModel.find({ deletedAt: null, slug: { $in: slugs } }).select('_id').lean()
+            const categoryData = await (CategoryModel as any).find({ deletedAt: null, slug: { $in: slugs } }).select('_id').lean()
             categoryId = categoryData.map(category => category._id)
         }
 
         // match stage  
-        let matchStage = {}
+        let matchStage: any = {}
         if (categoryId.length > 0) matchStage.category = { $in: categoryId }  // filter by category   
 
         if (search) {
@@ -54,7 +54,7 @@ export async function GET(request) {
 
 
         // aggregation pipeline  
-        const products = await ProductModel.aggregate([
+        const products = await (ProductModel as any).aggregate([
             { $match: matchStage },
             { $sort: sortquery },
             { $skip: skip },
@@ -134,6 +134,6 @@ export async function GET(request) {
         return response(true, 200, 'Product data found.', { products, nextPage })
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

@@ -1,3 +1,4 @@
+'use client'
 import { IconButton, Tooltip } from '@mui/material'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import axios from 'axios'
@@ -53,7 +54,7 @@ const Datatable = ({
         }
 
         if (c) {
-            deleteMutation.mutate({ ids, deleteType })
+            (deleteMutation as any).mutate({ ids, deleteType })
             setRowSelection({})
         }
     }
@@ -180,7 +181,7 @@ const Datatable = ({
 
                 {deleteType !== 'PD'
                     &&
-                    <Tooltip title="Recycle Bin" >
+                    <Tooltip title="Recycle Bin"  className="">
                         <Link href={trashView}>
                             <IconButton>
                                 <RecyclingIcon />
@@ -192,7 +193,7 @@ const Datatable = ({
 
                 {deleteType === 'SD'
                     &&
-                    <Tooltip title="Delete All" >
+                    <Tooltip title="Delete All"  className="">
                         <IconButton disabled={!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()}
                             onClick={() => handleDelete(Object.keys(rowSelection), deleteType)}
                         >
@@ -204,7 +205,7 @@ const Datatable = ({
                 {deleteType === 'PD'
                     &&
                     <>
-                        <Tooltip title="Restore Data" >
+                        <Tooltip title="Restore Data"  className="">
                             <IconButton disabled={!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()}
                                 onClick={() => handleDelete(Object.keys(rowSelection), 'RSD')}
                             >
@@ -212,7 +213,7 @@ const Datatable = ({
                                 <RestoreFromTrashIcon />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip title="Permanently Delete Data" >
+                        <Tooltip title="Permanently Delete Data"  className="">
                             <IconButton disabled={!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()}
                                 onClick={() => handleDelete(Object.keys(rowSelection), deleteType)}
                             >
@@ -230,10 +231,10 @@ const Datatable = ({
         renderRowActionMenuItems: ({ row }) => createAction(row, deleteType, handleDelete),
 
         renderTopToolbarCustomActions: ({ table }) => (
-            <Tooltip>
+            <Tooltip title="" className="">
                 <ButtonLoading
                     type="button"
-                    text={<><SaveAltIcon fontSize='25' /> Export</>}
+                    text="Export"
                     loading={exportLoading}
                     onClick={() => handleExport(table.getSelectedRowModel().rows)}
                     className="cursor-pointer"

@@ -11,11 +11,11 @@ export async function GET() {
         }
         await connectDB()
 
-        const latestOrder = await OrderModel.find({ deletedAt: null }).sort({ createdAt: -1 }).limit(20).lean()
+        const latestOrder = await (OrderModel as any).find({ deletedAt: null }).sort({ createdAt: -1 }).limit(20).lean()
 
         return response(true, 200, 'Data found', latestOrder)
 
-    } catch {
-        return catchError(error)
+    } catch (error) {
+        return catchError(error, 'Operation failed')
     }
 }

@@ -52,8 +52,8 @@ export async function GET(request) {
             }
         ]
 
-        const reviews = await ReviewModel.aggregate(aggregation)
-        const totalReview = await ReviewModel.countDocuments(matchQuery)
+        const reviews = await (ReviewModel as any).aggregate(aggregation)
+        const totalReview = await (ReviewModel as any).countDocuments(matchQuery)
         //    check if more data exists  
         let nextPage = null
         if (reviews.length > limit) {
@@ -64,6 +64,6 @@ export async function GET(request) {
         return response(true, 200, 'Review data.', { reviews, nextPage, totalReview })
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

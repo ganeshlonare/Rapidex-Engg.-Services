@@ -52,7 +52,7 @@ const ProductDetails = ({ product, variant, reviewCount }) => {
 
         setIsProductLoading(false)
 
-    }, [variant])
+    }, [variant, cartStore.count, cartStore.products, product._id])
 
     const handleThumb = (thumbUrl) => {
         setActiveThumb(thumbUrl)

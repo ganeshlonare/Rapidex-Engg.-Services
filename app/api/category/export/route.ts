@@ -12,11 +12,11 @@ export async function GET(request) {
 
         await connectDB()
 
-        const filter = {
+        const filter: any = {
             deletedAt: null
         }
 
-        const getCategory = await CategoryModel.find(filter).sort({ createdAt: -1 }).lean()
+        const getCategory = await (CategoryModel as any).find(filter).sort({ createdAt: -1 }).lean()
 
         if (!getCategory) {
             return response(false, 404, 'Collection empty.')
@@ -26,6 +26,6 @@ export async function GET(request) {
 
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Category export failed')
     }
 }

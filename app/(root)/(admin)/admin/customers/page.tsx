@@ -1,12 +1,13 @@
 'use client'
 import BreadCrumb from "@/components/Application/Admin/BreadCrumb"
+
+export const dynamic = 'force-dynamic'
 import DatatableWrapper from "@/components/Application/Admin/DatatableWrapper"
 import DeleteAction from "@/components/Application/Admin/DeleteAction"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {   DT_CUSTOMERS_COLUMN, } from "@/lib/column"
 import { columnConfig } from "@/lib/helperFunction"
 import { ADMIN_DASHBOARD, ADMIN_TRASH } from "@/routes/AdminPanelRoute"
-
 import { useCallback, useMemo } from "react"
 
 const breadcrumbData = [

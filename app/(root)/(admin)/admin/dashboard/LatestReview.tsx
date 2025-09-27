@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image"
 import notFound from '@/public/assets/images/not-found.png'
 const LatestReview = () => {
-    const [latestReview, setLatestReview] = useState()
+    const [latestReview, setLatestReview] = useState<any[]>([])
     const { data: getLatestReview, loading } = useFetch('/api/dashboard/admin/latest-review')
 
     useEffect(() => {
@@ -33,26 +33,24 @@ const LatestReview = () => {
     </div>
 
     return (
-        <Table>
-
-            <TableHeader>
-                <TableRow>
-                    <TableHead>Product</TableHead>
-                    <TableHead>Rating</TableHead>
+        <Table className="table-auto w-full">
+            <TableCaption className="text-lg font-semibold">Latest Review</TableCaption>
+            <TableHeader className="bg-gray-200">
+                <TableRow className="border-b">
+                    <TableHead className="px-6 py-3">Product</TableHead>
+                    <TableHead className="px-6 py-3">Rating</TableHead>
                 </TableRow>
             </TableHeader>
-            <TableBody>
-
-
+            <TableBody className="bg-white">
                 {latestReview?.map((review) => (
-                    <TableRow key={review._id}>
-                        <TableCell className="flex items-center gap-3">
-                            <Avatar>
-                                <AvatarImage src={review?.product?.media[0]?.secure_url || imgPlaceholder.src} />
+                    <TableRow className="hover:bg-gray-100 border-b" key={review._id}>
+                        <TableCell className="px-6 py-4">
+                            <Avatar className="">
+                                <AvatarImage className="" src={review?.product?.media[0]?.secure_url || imgPlaceholder.src} />
                             </Avatar>
                             <span className="line-clamp-1">{review?.product?.name || 'Not found'}</span>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="px-6 py-4">
                             <div className="flex items-center">
                                 {Array.from({ length: review.rating }).map((_, i) => (
                                     <span key={i}>

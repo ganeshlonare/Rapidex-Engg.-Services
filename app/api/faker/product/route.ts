@@ -19,12 +19,12 @@ export async function POST(req) {
     await connectDB();
     try {
         // Fetch all categories
-        const categories = await CategoryModel.find();
+        const categories = await (CategoryModel as any).find();
         if (categories.length === 0) {
-            return res.status(400).json({ message: "No categories found!" });
+            return response(false, 400, "No categories found!");
         }
 
-        const mediaList = await MediaModel.find();
+        const mediaList = await (MediaModel as any).find();
         const mediaMap = [];
         mediaList.forEach(media => {
             mediaMap.push(media._id);
@@ -41,7 +41,7 @@ export async function POST(req) {
 
             for (let i = 0; i < 5; i++) {
 
-                const mrp = Number(faker.commerce.price(500, 2000, 0));
+                const mrp = Number(faker.commerce.price({ min: 500, max: 2000, dec: 0 }));
                 const discountPercentage = faker.number.int({ min: 10, max: 50 });
                 const sellingPrice = Math.round(mrp - (mrp * discountPercentage) / 100);
 

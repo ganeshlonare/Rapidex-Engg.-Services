@@ -72,12 +72,12 @@ const AddProduct = () => {
 
   // discount percentage calculation 
   useEffect(() => {
-    const mrp = form.getValues('mrp') || 0
-    const sellingPrice = form.getValues('sellingPrice') || 0
+    const mrp = Number(form.getValues('mrp')) || 0
+    const sellingPrice = Number(form.getValues('sellingPrice')) || 0
 
     if (mrp > 0 && sellingPrice > 0) {
       const discountPercentage = ((mrp - sellingPrice) / mrp) * 100
-      form.setValue('discountPercentage', Math.round(discountPercentage))
+      form.setValue('discountPercentage', Math.round(discountPercentage).toString())
     }
 
   }, [form.watch('mrp'), form.watch('sellingPrice')])
@@ -87,7 +87,7 @@ const AddProduct = () => {
     form.setValue('description', data)
   }
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: any) => {
     setLoading(true)
     try {
       if (selectedMedia.length <= 0) {

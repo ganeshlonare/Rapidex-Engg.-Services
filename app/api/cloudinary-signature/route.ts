@@ -12,6 +12,6 @@ export async function POST(request) {
         return NextResponse.json({ signature })
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

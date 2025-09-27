@@ -26,7 +26,7 @@ export async function GET(request) {
         }
 
 
-        const mediaData = await MediaModel.find(filter).sort({ createdAt: -1 }).skip(page * limit).limit(limit).lean()
+        const mediaData = await (MediaModel as any).find(filter).sort({ createdAt: -1 }).skip(page * limit).limit(limit).lean()
         const totalMedia = await MediaModel.countDocuments(filter)
 
 
@@ -36,6 +36,6 @@ export async function GET(request) {
         })
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

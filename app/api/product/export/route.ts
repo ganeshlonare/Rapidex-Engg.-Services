@@ -12,11 +12,11 @@ export async function GET(request) {
 
         await connectDB()
 
-        const filter = {
+        const filter: any = {
             deletedAt: null
         }
 
-        const getProduct = await ProductModel.find(filter).select('-media -description').sort({ createdAt: -1 }).lean()
+        const getProduct = await (ProductModel as any).find(filter).select('-media -description').sort({ createdAt: -1 }).lean()
 
         if (!getProduct) {
             return response(false, 404, 'Collection empty.')
@@ -26,6 +26,6 @@ export async function GET(request) {
 
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }

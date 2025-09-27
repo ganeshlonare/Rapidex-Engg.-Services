@@ -21,13 +21,13 @@ const AdminDashboard = () => {
                     <CardHeader className="py-3 border [.border-b]:pb-3">
                         <div className='flex justify-between items-center'>
                             <span className='font-semibold'>Order Overview</span>
-                            <Button type="button" >
+                            <Button type="button">
                                 <Link href={ADMIN_ORDER_SHOW}>View All</Link>
                             </Button>
                         </div>
                     </CardHeader>
 
-                    <CardContent>
+                    <CardContent className="h-[250px] overflow-auto">
                         <OrderOverview />
                     </CardContent>
 
@@ -41,7 +41,7 @@ const AdminDashboard = () => {
                             </Button>
                         </div>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="">
                         <OrderStatus />
                     </CardContent>
                 </Card>

@@ -61,8 +61,8 @@ const OTPVerification = ({ email, onSubmit, loading }) => {
                                 <FormItem>
                                     <FormLabel className="font-semibold">One-time Password (OTP)</FormLabel>
                                     <FormControl>
-                                        <InputOTP maxLength={6} {...field}>
-                                            <InputOTPGroup>
+                                        <InputOTP className="" containerClassName="" maxLength={6} {...field}>
+                                            <InputOTPGroup className="">
                                                 <InputOTPSlot className="text-xl size-10" index={0} />
                                                 <InputOTPSlot className="text-xl size-10" index={1} />
                                                 <InputOTPSlot className="text-xl size-10" index={2} />

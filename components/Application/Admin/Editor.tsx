@@ -88,7 +88,12 @@ import { decode } from 'entities';
  */
 const LICENSE_KEY = 'GPL'; // or <YOUR_LICENSE_KEY>.
 
-export default function Editor({ onChange, initialData }) {
+type EditorProps = {
+    onChange: (event: any, editor: any) => void
+    initialData?: string
+}
+
+export default function Editor({ onChange, initialData = '' }: EditorProps) {
     const editorContainerRef = useRef(null);
     const editorRef = useRef(null);
     const [isLayoutReady, setIsLayoutReady] = useState(false);
@@ -104,7 +109,7 @@ export default function Editor({ onChange, initialData }) {
             return {};
         }
 
-        return {
+        const config: any = {
             editorConfig: {
                 toolbar: {
                     items: [
@@ -381,7 +386,8 @@ export default function Editor({ onChange, initialData }) {
                 }
             }
         };
-    }, [isLayoutReady]);
+        return config;
+    }, [isLayoutReady, initialData]);
 
     return (
         <div  >

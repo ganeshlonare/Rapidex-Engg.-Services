@@ -7,14 +7,14 @@ import { Metadata } from 'next'
 import getBaseUrl from '@/lib/getBaseUrl'
 
 interface PageProps {
-    params: {
+    params: Promise<{
         slug: string;
-    };
+    }>;
 }
 
 // Generate metadata for this page
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-    const { slug } = params
+    const { slug } = await params
     
     try {
         const baseUrl = getBaseUrl()
@@ -125,7 +125,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 const ProductPage = async ({ params }: PageProps) => {
-    const { slug } = params
+    const { slug } = await params
 
     try {
         const baseUrl = getBaseUrl()

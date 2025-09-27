@@ -9,7 +9,7 @@ import { zSchema } from '@/lib/zodSchema'
 import { ADMIN_DASHBOARD, ADMIN_MEDIA_EDIT, ADMIN_MEDIA_SHOW } from '@/routes/AdminPanelRoute'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
-import { use, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import imgPlaceholder from '@/public/assets/images/img-placeholder.webp'
 import { showToast } from '@/lib/showToast'
@@ -22,16 +22,15 @@ const breadCrumbData = [
     {
         href: ADMIN_MEDIA_SHOW,
         label: 'Media'
-    }
-    ,
+    },
     {
         href: "",
         label: 'Edit Media'
     }
 ]
 
-const EditMedia = ({ params }) => {
-    const { id } = use(params)
+const EditMedia = (props: any) => {
+    const { id } = props.params || {}
     const { data: mediaData } = useFetch(`/api/media/get/${id}`)
     const [loading, setLoading] = useState(false)
 
@@ -59,7 +58,7 @@ const EditMedia = ({ params }) => {
                 title: data.title
             })
         }
-    }, [mediaData])
+    }, [mediaData, form])
 
 
     const onSubmit = async (values) => {

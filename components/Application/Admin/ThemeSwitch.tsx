@@ -22,10 +22,10 @@ const ThemeSwitch = () => {
                     <IoMoonOutline className="hidden dark:block" />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => setTheme('light')}>Light</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('dark')}>Dark</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('system')}>System</DropdownMenuItem>
+            <DropdownMenuContent className="">
+                <DropdownMenuItem className="" inset={false} onClick={() => setTheme('light')}>Light</DropdownMenuItem>
+                <DropdownMenuItem className="" inset={false} onClick={() => setTheme('dark')}>Dark</DropdownMenuItem>
+                <DropdownMenuItem className="" inset={false} onClick={() => setTheme('system')}>System</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )

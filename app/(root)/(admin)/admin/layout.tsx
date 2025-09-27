@@ -4,6 +4,8 @@ import Topbar from '@/components/Application/Admin/Topbar'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import React from 'react'
 
+export const dynamic = 'force-dynamic'
+
 const layout = ({ children }) => {
     return (
         <ThemeProvider
@@ -12,7 +14,7 @@ const layout = ({ children }) => {
             enableSystem
             disableTransitionOnChange
         >
-            <SidebarProvider>
+            <SidebarProvider open={true} onOpenChange={() => {}} className="" style={{}}>
                 <AppSidebar />
                 <main className="md:w-[calc(100vw-16rem)] w-full overflow-x-hidden" >
                     <div className='pt-[70px] md:px-8 px-5 min-h-[calc(100vh-40px)] pb-10'>

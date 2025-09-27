@@ -8,24 +8,26 @@ import ButtonLoading from '@/components/Application/ButtonLoading'
 import { zSchema } from '@/lib/zodSchema'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { use, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import slugify from 'slugify'
 import { showToast } from '@/lib/showToast'
 import axios from 'axios'
 import useFetch from '@/hooks/useFetch'
 import MediaModal from '@/components/Application/Admin/MediaModal'
 import Image from 'next/image'
+import { useParams } from 'next/navigation'
+
 const breadcrumbData = [
     { href: ADMIN_DASHBOARD, label: 'Home' },
     { href: ADMIN_CATEGORY_SHOW, label: 'Category' },
     { href: '', label: 'Edit Category' },
 ]
 
-const EditCategory = ({ params }) => {
 
-    const { id } = use(params)
-    const { data: categoryData } = useFetch(`/api/category/get/${id}`)
+const EditCategory = () => {
 
+    const params = useParams<{ id: string }>()
+    const { data: categoryData } = useFetch(`/api/category/get/${params.id}`)
 
     const [loading, setLoading] = useState(false)
     // media modal states
@@ -38,7 +40,7 @@ const EditCategory = ({ params }) => {
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            _id: id,
+            _id: params.id,
             name: "",
             slug: "",
         },
@@ -59,15 +61,16 @@ const EditCategory = ({ params }) => {
                 setSelectedMedia([{ _id: data.media._id, url: data.media.secure_url }])
             }
         }
-    }, [categoryData])
+    }, [categoryData, form])
 
 
+    const watchedName = form.watch('name')
     useEffect(() => {
         const name = form.getValues('name')
         if (name) {
             form.setValue('slug', slugify(name).toLowerCase())
         }
-    }, [form.watch('name')])
+    }, [watchedName, form])
 
     const onSubmit = async (values) => {
         setLoading(true)

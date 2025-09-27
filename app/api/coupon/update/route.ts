@@ -28,7 +28,7 @@ export async function PUT(request) {
 
         const validatedData = validate.data
 
-        const getCoupon = await CouponModel.findOne({ deletedAt: null, _id: validatedData._id })
+        const getCoupon = await (CouponModel as any).findOne({ deletedAt: null, _id: validatedData._id })
         if (!getCoupon) {
             return response(false, 404, 'Data not found.')
         }
@@ -43,6 +43,6 @@ export async function PUT(request) {
         return response(true, 200, 'Coupon updated successfully.')
 
     } catch (error) {
-        return catchError(error)
+        return catchError(error, 'Operation failed')
     }
 }
