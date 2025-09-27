@@ -212,7 +212,7 @@ const Checkout = () => {
 
             const razOption = {
                 "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-                "amount": Math.round(totalAmount * 100), // Convert rupees to paise (same as order creation)
+                "amount": totalAmount, // Keep amount in rupees, no conversion
                 "currency": "INR",
                 "name": "Rapidex",
                 "description": "Payment for order",
