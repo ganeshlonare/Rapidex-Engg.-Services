@@ -26,7 +26,12 @@ const ProductReveiw = ({ productId }: { productId: string }) => {
     const [loading, setLoading] = useState(false)
     const [currentUrl, setCurrentUrl] = useState('')
     const [isReview, setIsReview] = useState(false)
-    const [reviewCount, setReviewCount] = useState<any>({})
+    const [reviewCount, setReviewCount] = useState<any>({
+        averageRating: 0,
+        totalReview: 0,
+        percentage: {},
+        rating: {}
+    })
     const { data: reviewDetails } = useFetch(`/api/review/details?productId=${productId}`)
 
     useEffect(() => {
@@ -115,7 +120,7 @@ const ProductReveiw = ({ productId }: { productId: string }) => {
                 <div className='flex justify-between flex-wrap items-center'>
                     <div className='md:w-1/2 w-full md:flex md:gap-10 md:mb-0 mb-5'>
                         <div className='md:w-[200px] w-full md:mb-0 mb-5'>
-                            <h4 className='text-center text-8xl font-semibold'>{reviewCount?.averageRating}</h4>
+                            <h4 className='text-center text-8xl font-semibold'>{reviewCount?.averageRating || 0}</h4>
                             <div className='flex justify-center gap-2'>
                                 <IoStar />
                                 <IoStar />
@@ -125,7 +130,7 @@ const ProductReveiw = ({ productId }: { productId: string }) => {
                             </div>
 
                             <p className='text-center mt-3'>
-                                ({reviewCount?.totalReview} Rating & Reviews)
+                                ({reviewCount?.totalReview || 0} Rating & Reviews)
                             </p>
                         </div>
 
@@ -138,8 +143,8 @@ const ProductReveiw = ({ productId }: { productId: string }) => {
                                             <p className='w-3'>{rating}</p>
                                             <IoStar />
                                         </div>
-                                        <Progress className="" value={reviewCount?.percentage[rating]} />
-                                        <span className='text-sm'>{reviewCount?.rating[rating]}</span>
+                                        <Progress className="" value={reviewCount?.percentage?.[rating] || 0} />
+                                        <span className='text-sm'>{reviewCount?.rating?.[rating] || 0}</span>
                                     </div>
                                 ))}
 
@@ -246,7 +251,7 @@ const ProductReveiw = ({ productId }: { productId: string }) => {
 
                     <div className='mt-10'>
                         {data && data.pages.map(page => (
-                            page.reviews.map(review => (
+                            page.reviews?.map(review => (
                                 <div className='mb-5' key={review._id}>
                                     <ReviewList review={review} />
                                 </div>
