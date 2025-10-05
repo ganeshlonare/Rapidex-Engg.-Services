@@ -1,3 +1,4 @@
+'use client'
 import AppSidebar from '@/components/Application/Admin/AppSidebar'
 import ThemeProvider from '@/components/Application/Admin/ThemeProvider'
 import Topbar from '@/components/Application/Admin/Topbar'
