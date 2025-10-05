@@ -177,12 +177,7 @@ const AddProduct = () => {
                       <FormItem>
                         <FormLabel>Size <span className='text-red-500'>*</span></FormLabel>
                         <FormControl>
-                          <Select
-                            options={sizes}
-                            selected={field.value}
-                            setSelected={field.onChange}
-                            isMulti={false}
-                          />
+                          <Input type="text" placeholder="Enter size" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

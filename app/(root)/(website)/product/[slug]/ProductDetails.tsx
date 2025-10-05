@@ -164,6 +164,7 @@ const ProductDetails = ({ product, variant, reviewCount }) => {
                     </div>
 
                     <div className="line-clamp-3" dangerouslySetInnerHTML={{ __html: decode(product.description) }}></div>
+                    {variant?.size && <p className="text-sm text-gray-600 mt-2">Size: {variant.size}</p>}
 
 
                     <div className="mt-5">
